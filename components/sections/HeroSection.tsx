@@ -8,13 +8,15 @@ export default function HeroSection() {
   const { t } = useLanguage()
 
   return (
-    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center overflow-hidden bg-background hero-parallax" style={{ contentVisibility: 'auto' } as React.CSSProperties}>
+    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center overflow-hidden bg-background hero-parallax">
       <video
         autoPlay
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover"
+        preload="auto"
+        disableRemotePlayback
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
       >
         <source src={img('/hero-bg.mp4')} type="video/mp4" />
         <source src={img('/hero-bg.webm')} type="video/webm" />
