@@ -88,10 +88,12 @@ export default function Home() {
     return () => clearTimeout(timeout)
   }, [])
 
+  if (!ready) {
+    return <SplashScreen onReady={() => setReady(true)} />
+  }
+
   return (
-    <>
-      {!ready && <SplashScreen onReady={() => setReady(true)} />}
-      <main className={`min-h-screen bg-background${!ready ? ' opacity-0 pointer-events-none' : ''}`}>
+    <main className="min-h-screen bg-background">
         <Header setCartOpen={setCartOpen} setSignInModalOpen={setSignInModalOpen} headerMode={headerMode} />
         <HeroSection />
       <ProductsSection onProductsChange={setActiveProducts} setCartOpen={setCartOpen} />
@@ -121,7 +123,6 @@ export default function Home() {
         cartOpen={cartOpen}
         checkoutOpen={checkoutOpen}
       />
-      </main>
-    </>
+    </main>
   )
 }
