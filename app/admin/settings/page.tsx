@@ -109,16 +109,41 @@ export default function AdminSettings() {
       toast.error('Session expired. Please refresh and sign in again.')
       return null
     }
+
+    let uploadFile = file
+    try {
+      const img = await createImageBitmap(file)
+      const MAX = 1920
+      let w = img.width, h = img.height
+      if (w > MAX || h > MAX) {
+        if (w > h) { h = Math.round(h * MAX / w); w = MAX }
+        else { w = Math.round(w * MAX / h); h = MAX }
+      }
+      const canvas = document.createElement('canvas')
+      canvas.width = w; canvas.height = h
+      const ctx = canvas.getContext('2d')!
+      ctx.drawImage(img, 0, 0, w, h)
+      img.close()
+      const blob = await new Promise<Blob>(resolve => canvas.toBlob(b => resolve(b!), 'image/jpeg', 0.85))
+      uploadFile = new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' })
+    } catch {
+      // compression failed — upload original
+    }
+
     const formData = new FormData()
-    formData.append('file', file)
+    formData.append('file', uploadFile)
     const res = await fetch('/api/upload', {
       method: 'POST',
       headers: { Authorization: `Bearer ${session.access_token}` },
       body: formData,
     })
     if (!res.ok) {
-      const err = await res.json().catch(() => ({ error: 'Unknown error' }))
-      toast.error(`Upload failed: ${err.error || res.statusText}`)
+      if (res.status === 413) {
+        toast.error('File too large. Max 4.5 MB allowed by server.')
+      } else {
+        const err = await res.json().catch(() => ({ error: 'Unknown error' }))
+        toast.error(`Upload failed: ${err.error || res.statusText}`)
+      }
       return null
     }
     const data = await res.json()
