@@ -8,7 +8,7 @@ export default function HeroSection() {
   const { t } = useLanguage()
 
   return (
-    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center overflow-hidden bg-background">
+    <section className="relative h-dvh flex flex-col items-center justify-center overflow-hidden">
       <img
         src={img('/hero-bg.webp')}
         alt=""
