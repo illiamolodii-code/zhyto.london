@@ -106,7 +106,7 @@ export function ImageCarousel({ images, onChange, showDots = true }: ImageCarous
                 src={img.src}
                 alt={img.alt}
                 fill
-                className="object-cover pointer-events-none"
+                className="object-contain pointer-events-none"
                 draggable={false}
               />
             </div>
