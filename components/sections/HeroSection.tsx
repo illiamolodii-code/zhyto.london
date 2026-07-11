@@ -12,7 +12,7 @@ export default function HeroSection() {
       <img
         src={img('/hero-bg.webp')}
         alt=""
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        className="absolute inset-0 w-full h-full object-contain pointer-events-none"
       />
       <div className="absolute inset-0 bg-black/40" />
       <div className="relative z-10 w-full max-w-5xl mx-auto px-5 sm:px-10 text-center pt-6 sm:pt-8 md:pt-10 lg:pt-10">
