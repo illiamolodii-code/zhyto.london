@@ -1,31 +1,19 @@
 "use client"
 
-import { useEffect, useRef } from 'react'
 import { ArrowRight, ChevronDown } from 'lucide-react'
 import { useLanguage } from '@/components/language-context'
 import { img } from '@/lib/constants'
 
 export default function HeroSection() {
   const { t } = useLanguage()
-  const videoRef = useRef<HTMLVideoElement>(null)
-
-  useEffect(() => {
-    videoRef.current?.play().catch(() => {})
-  }, [])
 
   return (
-    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center overflow-hidden bg-background hero-parallax">
-      <video
-        ref={videoRef}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
+    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center overflow-hidden bg-background">
+      <img
+        src={img('/hero-bg.webp')}
+        alt=""
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-      >
-        <source src={img('/hero-bg.mp4')} type="video/mp4" />
-      </video>
+      />
       <div className="absolute inset-0 bg-black/40" />
       <div className="relative z-10 w-full max-w-5xl mx-auto px-5 sm:px-10 text-center pt-6 sm:pt-8 md:pt-10 lg:pt-10">
         <h1 className="hero-delay-1 text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] font-serif font-light leading-[1.1] mb-10 relative tracking-[0.05em]">
