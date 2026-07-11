@@ -105,7 +105,10 @@ export default function AdminSettings() {
 
   const uploadImage = async (file: File): Promise<string | null> => {
     const { data: { session } } = await supabase.auth.getSession()
-    if (!session?.access_token) return null
+    if (!session?.access_token) {
+      toast.error('Session expired. Please refresh and sign in again.')
+      return null
+    }
     const formData = new FormData()
     formData.append('file', file)
     const res = await fetch('/api/upload', {

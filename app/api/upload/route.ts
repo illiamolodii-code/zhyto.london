@@ -3,6 +3,9 @@ import { requireAdmin } from '@/lib/middleware/admin.middleware';
 import { handleError } from '@/lib/utils/errors';
 import { createClient } from '@supabase/supabase-js';
 
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif'];
+const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
+
 export async function POST(request: NextRequest) {
   try {
     const user = await requireAdmin(request);
@@ -13,6 +16,15 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: 'No file provided' }, { status: 400 });
     }
 
+    if (file.size > MAX_SIZE) {
+      return Response.json({ error: 'File too large (max 10 MB)' }, { status: 400 });
+    }
+
+    const type = file.type.toLowerCase();
+    if (!ALLOWED_TYPES.includes(type) && !type.startsWith('image/')) {
+      return Response.json({ error: `Unsupported file type "${file.type}". Accepted: JPG, PNG, WebP, GIF, AVIF` }, { status: 400 });
+    }
+
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (!url || !serviceRoleKey) {
@@ -21,7 +33,6 @@ export async function POST(request: NextRequest) {
 
     const supabase = createClient(url, serviceRoleKey);
 
-    // Ensure bucket exists
     const { error: bucketError } = await supabase.storage.getBucket('product-images');
     if (bucketError?.message?.includes('not found')) {
       const { error: createError } = await supabase.storage.createBucket('product-images', {
