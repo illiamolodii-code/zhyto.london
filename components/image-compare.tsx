@@ -83,15 +83,6 @@ export function ImageCompare({ frontImage, backImage, alt = "" }: ImageComparePr
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
     >
-      <Image
-        src={backError ? fallback : backImage}
-        alt={alt}
-        fill
-        className="object-contain pointer-events-none"
-        draggable={false}
-        onError={() => setBackError(true)}
-      />
-
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
@@ -103,6 +94,20 @@ export function ImageCompare({ frontImage, backImage, alt = "" }: ImageComparePr
           className="object-contain"
           draggable={false}
           onError={() => setFrontError(true)}
+        />
+      </div>
+
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ clipPath: `inset(0 0 0 ${position}%)` }}
+      >
+        <Image
+          src={backError ? fallback : backImage}
+          alt={alt}
+          fill
+          className="object-contain"
+          draggable={false}
+          onError={() => setBackError(true)}
         />
       </div>
 

@@ -221,10 +221,11 @@ export default function ProductsSection({ onProductsChange, setCartOpen }: Produ
               </button>
 
               <div className="relative h-48 lg:h-64 w-full mb-6">
-                <ImageCompare
-                  frontImage={selectedProduct.image}
-                  backImage={selectedProduct.background_image || (selectedProduct.category === 'syrnyky' ? img("/images/syrnyky-ingredients.webp") : img("/images/syrnyky-ingredients.webp"))}
+                <Image
+                  src={selectedProduct.background_image || (selectedProduct.category === 'syrnyky' ? img("/images/syrnyky-ingredients.webp") : img("/images/syrnyky-ingredients.webp"))}
                   alt={selectedProduct.name}
+                  fill
+                  className="object-contain"
                 />
               </div>
 
