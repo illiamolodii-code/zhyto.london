@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowRight, ChevronDown } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { useLanguage } from '@/components/language-context'
 import { img } from '@/lib/constants'
 
@@ -15,7 +15,7 @@ export default function HeroSection() {
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
       />
       <div className="absolute inset-0 bg-black/40" />
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-5 sm:px-10 text-center pt-6 sm:pt-8 md:pt-10 lg:pt-10">
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-5 sm:px-10 text-center pt-20 sm:pt-24 md:pt-28 lg:pt-36">
         <h1 className="hero-delay-1 text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] font-serif font-light leading-[1.1] mb-10 relative tracking-[0.05em]">
           <span className="font-script text-primary text-[0.7em] uppercase tracking-[0.05em]">
             zhyto
@@ -29,18 +29,11 @@ export default function HeroSection() {
         <div className="hero-delay-4">
           <a
             href="#products"
-            className="group inline-flex items-center gap-5 bg-[#c2a57b] text-white text-2xl sm:text-3xl lg:text-4xl tracking-[0.35em] hover:bg-[#b08f64] transition-all duration-300 px-10 py-5 sm:px-14 sm:py-6"
+            className="group inline-flex items-center gap-5 text-primary text-2xl sm:text-3xl lg:text-4xl tracking-[0.35em] transition-all duration-300 px-10 py-5 sm:px-14 sm:py-6"
           >
-            <span className="pb-1">{t.hero.orderNow}</span>
+            <span className="font-script">{t.hero.orderNow}</span>
             <ArrowRight className="w-7 h-7 sm:w-9 sm:h-9" />
           </a>
-        </div>
-
-        <div className="hero-delay-5 mt-20">
-          <div className="chevron-bounce text-white/60">
-            <ChevronDown className="w-5 h-5 mx-auto" />
-            <span className="text-[10px] tracking-[0.3em] block mt-1">{t.hero.scroll}</span>
-          </div>
         </div>
       </div>
     </section>
