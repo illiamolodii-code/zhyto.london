@@ -145,7 +145,17 @@ export default function ProductsSection({ onProductsChange, setCartOpen }: Produ
                 </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 stagger-children">
-                  {catProducts.map((product) => (
+                  {catProducts.map((product, productIndex) => {
+                    const variants = [
+                      { rotate: -2.5, scaleX: 1, scaleY: 1 },
+                      { rotate: 3, scaleX: -1, scaleY: 1 },
+                      { rotate: -1.5, scaleX: 1, scaleY: -1 },
+                      { rotate: 2, scaleX: -1, scaleY: -1 },
+                      { rotate: -3.5, scaleX: 1, scaleY: 1 },
+                      { rotate: 1.5, scaleX: 1, scaleY: -1 },
+                    ]
+                    const v = variants[productIndex % variants.length]
+                    return (
                     <div
                       key={product.id}
                       className="group flex flex-col relative sm:pt-7"
@@ -182,14 +192,15 @@ export default function ProductsSection({ onProductsChange, setCartOpen }: Produ
                               <span className="font-script">{(product as any)[`name_${lang}`] || product.name}</span>
                             </h3>
                             <p className="text-lg text-black mt-1 transition-colors duration-300 group-hover/btn:text-primary/80 font-hand font-semibold">&pound;{product.price} {product.unit}</p>
-                            <div className="absolute inset-1/2 -translate-x-1/2 -translate-y-[55%] w-[120%] h-[140%] -z-10">
+                            <div className="absolute inset-1/2 -translate-x-1/2 -translate-y-[55%] w-[120%] h-[140%] -z-10" style={{ transform: `translate(-50%, -55%) rotate(${v.rotate}deg) scaleX(${v.scaleX}) scaleY(${v.scaleY})` }}>
                               <Image src={img("/images/about-card.webp")} alt="" fill className="object-fill" />
                             </div>
                           </span>
                         </button>
                       </div>
                     </div>
-                  ))}
+                    )
+                  })}
                 </div>
               </div>
             )
