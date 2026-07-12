@@ -177,7 +177,7 @@ export default function ProductsSection({ onProductsChange, setCartOpen }: Produ
                         </div>
 
                         <button type="button" className="p-4 pt-5 w-full text-center group/btn transition-all duration-300 hover:bg-primary/5" onClick={() => product.stock > 0 && setSelectedProduct(product)}>
-                          <span className="relative block leading-snug px-3">
+                          <span className="relative inline-block leading-snug">
                             <h3 className="font-serif text-lg text-gray-900 transition-colors duration-300 group-hover/btn:text-primary">
                               <span className="font-script">{(product as any)[`name_${lang}`] || product.name}</span>
                             </h3>
