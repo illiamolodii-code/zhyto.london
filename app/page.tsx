@@ -97,7 +97,7 @@ export default function Home() {
     <main className="min-h-screen bg-background">
         <Header setCartOpen={setCartOpen} setSignInModalOpen={setSignInModalOpen} headerMode={headerMode} />
         <HeroSection />
-      <SectionWave color="#f5ead6" />
+      <SectionWave color="#f5ead6" animate overlap />
       <ProductsSection onProductsChange={setActiveProducts} setCartOpen={setCartOpen} />
       <SectionWave color="#c2a57b" />
       <AboutSection />
