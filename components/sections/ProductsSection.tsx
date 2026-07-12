@@ -120,7 +120,7 @@ export default function ProductsSection({ onProductsChange, setCartOpen }: Produ
     <>
       <section
         id="products"
-        className="py-28 lg:py-36 relative z-20 section-orange section-wave-bottom"
+        className="py-28 lg:py-36 relative z-20 section-orange"
       >
         <div className="max-w-7xl mx-auto px-5 lg:px-10">
           <div className="animate-on-view text-center mb-20">

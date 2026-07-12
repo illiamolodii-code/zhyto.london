@@ -10,7 +10,7 @@ export default function DeliverySection() {
   const { settings: delivery } = useDeliverySettings()
 
   return (
-    <section id="delivery" className="py-28 lg:py-36 relative section-orange section-wave-bottom" style={{ contentVisibility: 'auto' }}>
+    <section id="delivery" className="py-28 lg:py-36 relative section-orange" style={{ contentVisibility: 'auto' }}>
       <div className="max-w-7xl mx-auto px-5 lg:px-10">
         <div className="animate-on-view text-center mb-16">
           <p className="text-[46px] tracking-[0.35em] mb-5">
