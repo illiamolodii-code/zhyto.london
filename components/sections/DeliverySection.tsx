@@ -14,7 +14,7 @@ export default function DeliverySection() {
       <div className="max-w-7xl mx-auto px-5 lg:px-10">
         <div className="animate-on-view text-center mb-16">
           <p className="text-[46px] tracking-[0.35em] mb-5">
-            <span className="font-script text-primary">{t.delivery.headingPrefix}{t.delivery.headingSuffix}</span>
+            <span className="font-script text-primary uppercase">{t.delivery.headingPrefix}{t.delivery.headingSuffix}</span>
           </p>
         </div>
 

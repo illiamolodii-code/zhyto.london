@@ -37,12 +37,13 @@ export default function AboutSection() {
   return (
     <section id="about" ref={aboutRef} className="py-28 lg:py-36 relative bg-background">
       <div className="max-w-7xl mx-auto px-5 lg:px-10">
+        <div className="text-center mb-12">
+          <p className="text-[46px] tracking-[0.35em]">
+            <span className="font-script text-primary">{t.about.ourStory}</span>
+          </p>
+        </div>
         <div className="grid lg:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-center">
           <div className="order-1 lg:order-1">
-            <p className="text-[46px] tracking-[0.35em] mb-5">
-              <span className="font-script text-primary">{t.about.ourStory}</span>
-            </p>
-            <div className="w-10 h-px bg-primary/60 mb-10" />
             <div className="stagger-left">
               <p className="animate-on-view-left text-muted-foreground leading-[1.9] mb-6 text-xl md:text-lg lg:text-xl">
                 {t.about.para1}
@@ -54,7 +55,7 @@ export default function AboutSection() {
                 href="#faq"
                 className="animate-on-view-left inline-flex items-center gap-4 text-primary text-[15px] tracking-[0.25em] hover:gap-6 transition-all duration-300"
               >
-                <span className="border-b border-primary/60 pb-1">{t.about.getInTouch}</span>
+                <span>{t.about.getInTouch}</span>
                 <ArrowRight className="w-4 h-4 opacity-80" />
               </a>
             </div>

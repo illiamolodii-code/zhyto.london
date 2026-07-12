@@ -22,8 +22,6 @@ export default function HeroSection() {
           </span>
         </h1>
 
-        <div className="hero-fade-delay-2 w-20 h-px bg-primary/60 mb-8 mx-auto" />
-
         <p className="hero-delay-3 text-xl sm:text-2xl md:text-3xl text-[#f5ead6] leading-[1.8] mb-12 max-w-4xl mx-auto">
           {t.hero.description}<br />{t.hero.description2}
         </p>
