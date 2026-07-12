@@ -290,18 +290,6 @@ button, a, [role="button"], input, select, textarea {
 
 /* ── Scroll-Driven Animations ── */
 @supports ((animation-timeline: scroll()) and (animation-range: 0 1px)) {
-  @keyframes hero-parallax {
-    from { opacity: 1; scale: 1; }
-    to { opacity: 0; scale: 0.95; }
-  }
-  .hero-parallax { animation: hero-parallax linear both; animation-timeline: scroll(root); animation-range: 0 20%; }
-
-  @keyframes products-parallax {
-    from { translate: 0 200px; }
-    to { translate: 0 0; }
-  }
-  .products-parallax { animation: products-parallax linear both; animation-timeline: scroll(root); animation-range: 0 25%; }
-
   @keyframes about-image-parallax {
     from { translate: 0 -8%; }
     to { translate: 0 8%; }
