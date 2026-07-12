@@ -344,3 +344,11 @@ button, a, [role="button"], input, select, textarea {
 /* Chevron bounce */
 @keyframes bounce-y { 0%, 100% { translate: 0 0; } 50% { translate: 0 6px; } }
 .chevron-bounce { animation: bounce-y 1.5s ease-in-out infinite; }
+
+/* Wavy section divider */
+.section-wave-bottom {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 96%, 85% 100%, 70% 96%, 55% 100%, 40% 96%, 25% 100%, 10% 96%, 0% 100%);
+}
+.section-wave-top {
+  clip-path: polygon(0% 4%, 15% 0%, 30% 4%, 45% 0%, 60% 4%, 75% 0%, 90% 4%, 100% 0%, 100% 100%, 0% 100%);
+}
