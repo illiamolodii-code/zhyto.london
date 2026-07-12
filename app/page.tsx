@@ -99,7 +99,7 @@ export default function Home() {
         <HeroSection />
       <SectionWave color="#f5ead6" animate overlap />
       <ProductsSection onProductsChange={setActiveProducts} setCartOpen={setCartOpen} />
-      <SectionWave color="#c2a57b" />
+      <SectionWave color="#c2a57b" animate overlap />
       <AboutSection />
       <SectionWave color="#f5ead6" />
       <DeliverySection />
