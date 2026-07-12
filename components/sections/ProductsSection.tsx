@@ -138,7 +138,14 @@ export default function ProductsSection({ onProductsChange, setCartOpen }: Produ
             return (
               <div key={key} className={catIndex > 0 ? 'mt-16' : ''}>
                 <div className="animate-on-view mb-8">
-                  <h3 className="font-serif text-5xl md:text-4xl lg:text-5xl text-foreground mb-2">{label}</h3>
+                  <h3 className="text-5xl md:text-4xl lg:text-5xl text-foreground mb-2">
+                    <span className="relative inline-block font-script">
+                      {label}
+                      <div className="absolute inset-1/2 -translate-x-1/2 -translate-y-[55%] w-[120%] h-[140%] -z-10">
+                        <Image src={img("/images/about-card.webp")} alt="" fill className="object-fill" />
+                      </div>
+                    </span>
+                  </h3>
                   <p className="text-base text-muted-foreground">{desc}</p>
                 </div>
 
