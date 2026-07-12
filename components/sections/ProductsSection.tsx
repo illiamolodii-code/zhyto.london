@@ -184,6 +184,7 @@ export default function ProductsSection({ onProductsChange, setCartOpen }: Produ
                             <p className="text-xl text-black mt-2 transition-colors duration-300 group-hover/btn:text-primary/80 font-hand font-semibold">&pound;{product.price} {product.unit}</p>
                             <div className={`absolute h-[140%] -z-10 ${product.name === 'Syrnyky' ? 'left-0 w-full' : 'inset-1/2 w-[120%]'}`} style={{
                               transform: (() => {
+                                if (product.name === 'Syrnyky') return 'translate(0, -55%)'
                                 const variants = [
                                   { sx: 1, sy: 1 },
                                   { sx: -1, sy: 1 },
@@ -192,8 +193,7 @@ export default function ProductsSection({ onProductsChange, setCartOpen }: Produ
                                 ]
                                 const idx = String(product.id).split('').reduce((a, c) => a + c.charCodeAt(0), 0) % variants.length
                                 const v = variants[idx]
-                                const tx = product.name === 'Syrnyky' ? '0' : '-50%'
-                                return `translate(${tx}, -55%) scaleX(${v.sx}) scaleY(${v.sy})`
+                                return `translate(-50%, -55%) scaleX(${v.sx}) scaleY(${v.sy})`
                               })()
                             }}>
                               <Image src={img("/images/about-card.webp")} alt="" fill className="object-fill" />
