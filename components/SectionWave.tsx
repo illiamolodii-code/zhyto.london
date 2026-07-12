@@ -1,3 +1,7 @@
+'use client'
+
+import { useRef, useEffect } from 'react'
+
 interface SectionWaveProps {
   color?: string
   reverse?: boolean
@@ -6,10 +10,39 @@ interface SectionWaveProps {
 }
 
 export default function SectionWave({ color = '#f5ead6', reverse, animate, overlap }: SectionWaveProps) {
+  const svgRef = useRef<SVGSVGElement>(null)
+
+  useEffect(() => {
+    if (!svgRef.current || !animate) return
+    const svg = svgRef.current
+    let ticking = false
+
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const rect = svg.getBoundingClientRect()
+          const vh = window.innerHeight
+          const center = rect.top + rect.height / 2
+          const dist = (center - vh / 2) / vh
+          const shift = Math.max(-1, Math.min(1, dist * 1.5)) * 30
+          svg.style.transform = `translateX(${shift}px)`
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [animate])
+
   return (
     <div className={`relative w-full h-[40px] sm:h-[50px] md:h-[60px] overflow-hidden ${overlap ? '-mt-12 md:-mt-16' : '-mt-px'}`}>
       <svg
-        className={`absolute w-[110%] h-full ${animate ? 'animate-wave' : ''} ${reverse ? 'rotate-180 scale-y-[-1]' : ''}`}
+        ref={svgRef}
+        className={`absolute w-[110%] h-full ${reverse ? 'rotate-180 scale-y-[-1]' : ''}`}
         style={{ left: '-5%' }}
         viewBox="0 0 2880 74.39"
         preserveAspectRatio="none"
