@@ -15,19 +15,31 @@ export default function SectionWave({ color = '#f5ead6', reverse, animate, overl
   useEffect(() => {
     if (!svgRef.current || !animate) return
     const svg = svgRef.current
+    const target = { v: 0 }
+    const current = { v: 0 }
 
     const onScroll = () => {
       const rect = svg.getBoundingClientRect()
       const vh = window.innerHeight
       const center = rect.top + rect.height / 2
       const dist = (center - vh / 2) / vh
-      const shift = Math.max(-1, Math.min(1, dist)) * 160
-      svg.style.transform = `translateX(${shift}px)`
+      target.v = Math.max(-1, Math.min(1, dist)) * 160
+    }
+
+    const tick = () => {
+      current.v += (target.v - current.v) * 0.06
+      svg.style.transform = `translateX(${current.v}px)`
+      rid = requestAnimationFrame(tick)
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })
+    let rid = requestAnimationFrame(tick)
     onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
+
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      cancelAnimationFrame(rid)
+    }
   }, [animate])
 
   return (
