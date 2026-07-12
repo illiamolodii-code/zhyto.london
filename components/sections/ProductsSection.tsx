@@ -182,7 +182,7 @@ export default function ProductsSection({ onProductsChange, setCartOpen }: Produ
                               <span className="font-script">{(product as any)[`name_${lang}`] || product.name}</span>
                             </h3>
                             <p className="text-xl text-black mt-2 transition-colors duration-300 group-hover/btn:text-primary/80 font-hand font-semibold">&pound;{product.price} {product.unit}</p>
-                            <div className={`absolute h-[140%] -z-10 ${product.name === 'Syrnyky' ? 'left-0 w-full' : 'inset-1/2 w-[120%]'}`} style={{
+                            <div className={`absolute h-[140%] -z-10 ${product.name === 'Syrnyky' ? 'left-0 w-full top-1/2' : 'inset-1/2 w-[120%]'}`} style={{
                               transform: (() => {
                                 if (product.name === 'Syrnyky') return 'translate(0, -55%)'
                                 const variants = [
