@@ -23,11 +23,11 @@ export default function SectionWave({ color = '#f5ead6', reverse, animate, overl
       const vh = window.innerHeight
       const center = rect.top + rect.height / 2
       const dist = (center - vh / 2) / vh
-      target.v = Math.max(-1, Math.min(1, dist)) * 160
+      target.v = Math.max(-1, Math.min(1, dist)) * 400
     }
 
     const tick = () => {
-      current.v += (target.v - current.v) * 0.06
+      current.v += (target.v - current.v) * 0.025
       svg.style.transform = `translateX(${current.v}px)`
       rid = requestAnimationFrame(tick)
     }
@@ -46,7 +46,7 @@ export default function SectionWave({ color = '#f5ead6', reverse, animate, overl
     <div className={`relative z-30 w-full h-[50px] sm:h-[60px] md:h-[74px] overflow-hidden ${overlap ? '-mt-12 md:-mt-16' : '-mt-px'}`}>
       <svg
         ref={svgRef}
-        className={`absolute w-[200%] h-full -left-1/2 ${reverse ? 'rotate-180 scale-y-[-1]' : ''}`}
+        className={`absolute w-[300%] h-full -left-[100%] ${reverse ? 'rotate-180 scale-y-[-1]' : ''}`}
         style={{ willChange: animate ? 'transform' : undefined }}
         viewBox="0 0 2880 74.39"
         preserveAspectRatio="none"
