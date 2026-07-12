@@ -145,17 +145,7 @@ export default function ProductsSection({ onProductsChange, setCartOpen }: Produ
                 </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 stagger-children">
-                  {catProducts.map((product, productIndex) => {
-                    const variants = [
-                      { rotate: -2.5, scaleX: 1, scaleY: 1 },
-                      { rotate: 3, scaleX: -1, scaleY: 1 },
-                      { rotate: -1.5, scaleX: 1, scaleY: -1 },
-                      { rotate: 2, scaleX: -1, scaleY: -1 },
-                      { rotate: -3.5, scaleX: 1, scaleY: 1 },
-                      { rotate: 1.5, scaleX: 1, scaleY: -1 },
-                    ]
-                    const v = variants[productIndex % variants.length]
-                    return (
+                  {catProducts.map((product) => (
                     <div
                       key={product.id}
                       className="group flex flex-col relative sm:pt-7"
@@ -187,20 +177,19 @@ export default function ProductsSection({ onProductsChange, setCartOpen }: Produ
                         </div>
 
                         <button type="button" className="p-4 pt-5 w-full text-center group/btn transition-all duration-300 hover:bg-primary/5" onClick={() => product.stock > 0 && setSelectedProduct(product)}>
-                          <span className="relative inline-block leading-snug">
-                            <h3 className="font-serif text-xl text-gray-900 transition-colors duration-300 group-hover/btn:text-primary">
+                          <span className="relative block leading-snug px-3">
+                            <h3 className="font-serif text-lg text-gray-900 transition-colors duration-300 group-hover/btn:text-primary">
                               <span className="font-script">{(product as any)[`name_${lang}`] || product.name}</span>
                             </h3>
-                            <p className="text-xl text-black mt-1 transition-colors duration-300 group-hover/btn:text-primary/80 font-hand font-semibold">&pound;{product.price} {product.unit}</p>
-                            <div className="absolute inset-1/2 -translate-x-1/2 -translate-y-[55%] w-[200%] h-[160%] -z-10" style={{ transform: `translate(-50%, -55%) rotate(${v.rotate}deg) scaleX(${v.scaleX}) scaleY(${v.scaleY})` }}>
+                            <p className="text-lg text-black mt-1 transition-colors duration-300 group-hover/btn:text-primary/80 font-hand font-semibold">&pound;{product.price} {product.unit}</p>
+                            <div className="absolute inset-1/2 -translate-x-1/2 -translate-y-[55%] w-[120%] h-[140%] -z-10">
                               <Image src={img("/images/about-card.webp")} alt="" fill className="object-fill" />
                             </div>
                           </span>
                         </button>
                       </div>
                     </div>
-                    )
-                  })}
+                  ))}
                 </div>
               </div>
             )
