@@ -177,12 +177,12 @@ export default function ProductsSection({ onProductsChange, setCartOpen }: Produ
                         </div>
 
                         <button type="button" className="p-4 pt-5 w-full text-center group/btn transition-all duration-300 hover:bg-primary/5" onClick={() => product.stock > 0 && setSelectedProduct(product)}>
-                          <span className="relative inline-block leading-snug">
+                          <span className={`relative ${product.name === 'Syrnyky' ? 'block' : 'inline-block'} leading-snug`}>
                             <h3 className="font-serif text-lg text-gray-900 transition-colors duration-300 group-hover/btn:text-primary">
                               <span className="font-script">{(product as any)[`name_${lang}`] || product.name}</span>
                             </h3>
                             <p className="text-lg text-black mt-1 transition-colors duration-300 group-hover/btn:text-primary/80 font-hand font-semibold">&pound;{product.price} {product.unit}</p>
-                            <div className="absolute inset-1/2 -translate-x-1/2 -translate-y-[55%] w-[120%] h-[140%] -z-10">
+                            <div className={`absolute -translate-y-[55%] h-[140%] -z-10 ${product.name === 'Syrnyky' ? 'left-0 w-full' : 'inset-1/2 -translate-x-1/2 w-[120%]'}`}>
                               <Image src={img("/images/about-card.webp")} alt="" fill className="object-fill" />
                             </div>
                           </span>
