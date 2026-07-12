@@ -39,10 +39,8 @@ export default function AboutSection() {
       <div className="max-w-7xl mx-auto px-5 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-center">
           <div className="order-1 lg:order-1">
-            <p className="text-[39px] tracking-[0.35em] mb-0">
-              <span className="font-script text-black">
-                {t.about.ourStory}
-              </span>
+            <p className="text-[46px] tracking-[0.35em] mb-5">
+              <span className="font-script text-primary">{t.about.ourStory}</span>
             </p>
             <div className="w-10 h-px bg-primary/60 mb-10" />
             <div className="stagger-left">
