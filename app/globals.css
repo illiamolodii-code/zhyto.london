@@ -343,5 +343,5 @@ button, a, [role="button"], input, select, textarea {
 .hero-fade-delay-2 { animation: fade-in-time 0.8s 0.4s backwards; }
 
 /* Wave animation */
-@keyframes wave-slide { 0%, 100% { translate: 0 0; } 50% { translate: -15px 0; } }
+@keyframes wave-slide { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-15px); } }
 .animate-wave { animation: wave-slide 5s ease-in-out infinite; }
