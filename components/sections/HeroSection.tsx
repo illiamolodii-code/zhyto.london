@@ -1,6 +1,5 @@
 "use client"
 
-import { ArrowRight } from 'lucide-react'
 import { useLanguage } from '@/components/language-context'
 import { img } from '@/lib/constants'
 
@@ -32,7 +31,6 @@ export default function HeroSection() {
             className="group inline-flex items-center gap-5 text-primary text-2xl sm:text-3xl lg:text-4xl tracking-[0.35em] transition-all duration-300 px-10 py-5 sm:px-14 sm:py-6"
           >
             <span className="font-script">{t.hero.orderNow}</span>
-            <ArrowRight className="w-7 h-7 sm:w-9 sm:h-9" />
           </a>
         </div>
       </div>
