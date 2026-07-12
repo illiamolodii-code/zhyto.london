@@ -104,7 +104,7 @@ export default function Home() {
       <SectionWave color="#f5ead6" />
       <DeliverySection />
       <FAQSection />
-      <SectionWave color="#000" />
+      <SectionWave color="#000" animate overlap />
       <ReviewsSection setSignInModalOpen={setSignInModalOpen} />
       <Footer />
 
