@@ -181,7 +181,7 @@ export default function ProductsSection({ onProductsChange, setCartOpen }: Produ
                             <h3 className="font-serif text-lg text-gray-900 transition-colors duration-300 group-hover/btn:text-primary">
                               <span className="font-script">{(product as any)[`name_${lang}`] || product.name}</span>
                             </h3>
-                            <p className="text-sm text-black mt-1 transition-colors duration-300 group-hover/btn:text-primary/80">&pound;{product.price} {product.unit}</p>
+                            <p className="text-base text-black mt-1 transition-colors duration-300 group-hover/btn:text-primary/80 font-script">&pound;{product.price} {product.unit}</p>
                             <div className="absolute inset-1/2 -translate-x-1/2 -translate-y-[55%] w-[120%] h-[140%] -z-10">
                               <Image src={img("/images/about-card.webp")} alt="" fill className="object-fill" />
                             </div>
