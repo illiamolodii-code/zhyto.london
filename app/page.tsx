@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { CartDrawer } from '@/components/cart-drawer'
 import { CheckoutModal } from '@/components/checkout-modal'
+import SectionWave from '@/components/SectionWave'
 import Header from '@/components/sections/Header'
 import HeroSection from '@/components/sections/HeroSection'
 import ProductsSection from '@/components/sections/ProductsSection'
@@ -96,10 +97,14 @@ export default function Home() {
     <main className="min-h-screen bg-background">
         <Header setCartOpen={setCartOpen} setSignInModalOpen={setSignInModalOpen} headerMode={headerMode} />
         <HeroSection />
+      <SectionWave color="#f5ead6" />
       <ProductsSection onProductsChange={setActiveProducts} setCartOpen={setCartOpen} />
+      <SectionWave color="#c2a57b" />
       <AboutSection />
+      <SectionWave color="#f5ead6" />
       <DeliverySection />
       <FAQSection />
+      <SectionWave color="#000" />
       <ReviewsSection setSignInModalOpen={setSignInModalOpen} />
       <Footer />
 
