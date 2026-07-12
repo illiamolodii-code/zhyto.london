@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Minus } from 'lucide-react'
-import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { img as imgPath } from '@/lib/constants'
 const img = imgPath
@@ -23,13 +22,8 @@ export default function FAQSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <p className="text-[18px] tracking-[0.35em] mb-5">
-            <span className="relative inline-block font-script text-black">
-              {t.faq.heading}
-              <div className="absolute inset-1/2 -translate-x-1/2 -translate-y-[55%] w-[200%] h-[300%] -z-10">
-                <Image src={img("/images/about-card.webp")} alt="" fill className="object-fill" />
-              </div>
-            </span>
+          <p className="text-[46px] tracking-[0.35em] mb-5">
+            <span className="font-script text-primary">{t.faq.heading}</span>
           </p>
         </motion.div>
 

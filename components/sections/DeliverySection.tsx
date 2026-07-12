@@ -1,6 +1,5 @@
 "use client"
 
-import Image from 'next/image'
 import { img as imgPath } from '@/lib/constants'
 const img = imgPath
 import { useLanguage } from '@/components/language-context'
@@ -14,13 +13,8 @@ export default function DeliverySection() {
     <section id="delivery" className="py-28 lg:py-36 relative section-orange" style={{ contentVisibility: 'auto' }}>
       <div className="max-w-7xl mx-auto px-5 lg:px-10">
         <div className="animate-on-view text-center mb-16">
-          <p className="text-[18px] tracking-[0.35em] mb-5">
-            <span className="relative inline-block font-script text-black">
-              {t.delivery.headingPrefix}{t.delivery.headingSuffix}
-              <div className="absolute inset-1/2 -translate-x-1/2 -translate-y-[55%] w-[200%] h-[300%] -z-10">
-                <Image src={img("/images/about-card.webp")} alt="" fill className="object-fill" />
-              </div>
-            </span>
+          <p className="text-[46px] tracking-[0.35em] mb-5">
+            <span className="font-script text-primary">{t.delivery.headingPrefix}{t.delivery.headingSuffix}</span>
           </p>
         </div>
 
