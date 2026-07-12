@@ -25,6 +25,7 @@ const zhyto = localFont({
 
 const caveat = Caveat({
   subsets: ['latin', 'cyrillic'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-caveat',
   display: 'swap',
 })
