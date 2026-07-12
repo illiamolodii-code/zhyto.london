@@ -190,7 +190,7 @@ export default function ProductsSection({ onProductsChange, setCartOpen }: Produ
                                   { sx: 1, sy: -1 },
                                   { sx: -1, sy: -1 },
                                 ]
-                                const idx = product.id.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % variants.length
+                                const idx = String(product.id).split('').reduce((a, c) => a + c.charCodeAt(0), 0) % variants.length
                                 const v = variants[idx]
                                 const tx = product.name === 'Syrnyky' ? '0' : '-50%'
                                 return `translate(${tx}, -55%) scaleX(${v.sx}) scaleY(${v.sy})`
