@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 
 interface SectionWaveProps {
   color?: string
@@ -10,26 +10,26 @@ interface SectionWaveProps {
 }
 
 export default function SectionWave({ color = '#f5ead6', reverse, animate, overlap }: SectionWaveProps) {
-  const svgRef = useRef<SVGSVGElement>(null)
+  const divRef = useRef<HTMLDivElement>(null)
+  const [shift, setShift] = useState(0)
 
   useEffect(() => {
-    if (!svgRef.current || !animate) return
-    const svg = svgRef.current
+    if (!animate) return
     let ticking = false
 
     const onScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const rect = svg.getBoundingClientRect()
-          const vh = window.innerHeight
-          const center = rect.top + rect.height / 2
-          const dist = (center - vh / 2) / vh
-          const shift = Math.max(-1, Math.min(1, dist * 1.5)) * 60
-          svg.style.transform = `translateX(${shift}px)`
-          ticking = false
-        })
-        ticking = true
-      }
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(() => {
+        const el = divRef.current
+        if (!el) return
+        const rect = el.getBoundingClientRect()
+        const vh = window.innerHeight
+        const center = rect.top + rect.height / 2
+        const dist = (center - vh / 2) / vh
+        setShift(Math.max(-1, Math.min(1, dist * 1.5)) * 60)
+        ticking = false
+      })
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -39,11 +39,10 @@ export default function SectionWave({ color = '#f5ead6', reverse, animate, overl
   }, [animate])
 
   return (
-    <div className={`relative z-30 w-full h-[40px] sm:h-[50px] md:h-[60px] overflow-hidden ${overlap ? '-mt-12 md:-mt-16' : '-mt-px'}`}>
+    <div ref={divRef} className={`relative z-30 w-full h-[40px] sm:h-[50px] md:h-[60px] overflow-hidden ${overlap ? '-mt-12 md:-mt-16' : '-mt-px'}`}>
       <svg
-        ref={svgRef}
         className={`absolute w-[110%] h-full ${reverse ? 'rotate-180 scale-y-[-1]' : ''}`}
-        style={{ left: '-5%' }}
+        style={{ left: '-5%', transform: animate ? `translateX(${shift}px)` : undefined }}
         viewBox="0 0 2880 74.39"
         preserveAspectRatio="none"
         xmlns="http://www.w3.org/2000/svg"
