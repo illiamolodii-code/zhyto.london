@@ -108,6 +108,7 @@ html, html * {
   --font-sans: var(--font-geist), system-ui, sans-serif;
   --font-serif: var(--font-playfair), Georgia, serif;
   --font-script: var(--font-zhyto), var(--font-epoch), cursive;
+  --font-hand: var(--font-caveat), cursive;
   --font-konstrukt: var(--font-konstrukt), sans-serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
   --color-background: var(--background);
