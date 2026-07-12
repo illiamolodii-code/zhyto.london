@@ -21,7 +21,7 @@ export default function HeroSection() {
           </span>
         </h1>
 
-        <p className="hero-delay-3 text-xl sm:text-2xl md:text-3xl text-[#f5ead6] leading-[1.8] mb-12 max-w-4xl mx-auto">
+        <p className="hero-delay-3 text-xl sm:text-2xl md:text-3xl text-primary font-script leading-[1.8] mb-12 max-w-4xl mx-auto">
           {t.hero.description}<br />{t.hero.description2}
         </p>
 
