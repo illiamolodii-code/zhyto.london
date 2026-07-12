@@ -21,7 +21,7 @@ export default function SectionWave({ color = '#f5ead6', reverse, animate, overl
       const vh = window.innerHeight
       const center = rect.top + rect.height / 2
       const dist = (center - vh / 2) / vh
-      const shift = Math.max(-1, Math.min(1, dist)) * 100
+      const shift = Math.max(-1, Math.min(1, dist)) * 160
       svg.style.transform = `translateX(${shift}px)`
     }
 
@@ -34,7 +34,7 @@ export default function SectionWave({ color = '#f5ead6', reverse, animate, overl
     <div className={`relative z-30 w-full h-[50px] sm:h-[60px] md:h-[74px] overflow-hidden ${overlap ? '-mt-12 md:-mt-16' : '-mt-px'}`}>
       <svg
         ref={svgRef}
-        className={`absolute w-full h-full ${reverse ? 'rotate-180 scale-y-[-1]' : ''}`}
+        className={`absolute w-[200%] h-full -left-1/2 ${reverse ? 'rotate-180 scale-y-[-1]' : ''}`}
         style={{ willChange: animate ? 'transform' : undefined }}
         viewBox="0 0 2880 74.39"
         preserveAspectRatio="none"
