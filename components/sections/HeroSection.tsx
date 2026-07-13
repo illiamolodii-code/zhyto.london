@@ -11,20 +11,13 @@ export default function HeroSection() {
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
-    video.src = img('/hero-bg.mp4')
+    video.src = img(window.innerWidth <= 640 ? '/hero-bg-mobile.mp4' : '/hero-bg.mp4')
     video.load()
     video.play().catch(() => {})
   }, [])
 
   return (
     <section className="relative min-h-dvh max-h-[720px] flex flex-col items-center justify-center overflow-hidden bg-black">
-      <img
-        src={img('/hero-bg-mobile.webp')}
-        alt=""
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none sm:hidden"
-        loading="eager"
-        decoding="async"
-      />
       <video
         ref={videoRef}
         autoPlay
@@ -33,7 +26,7 @@ export default function HeroSection() {
         playsInline
         preload="auto"
         disableRemotePlayback
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none hidden sm:block"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
       />
       <div className="absolute inset-0 bg-black/40" />
       <div className="absolute inset-0 pointer-events-none opacity-[12%] mix-blend-overlay" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }} />

@@ -147,25 +147,17 @@ export default function Home() {
             if (data.categories_desc_uk) setPreloadedCategoryDescUk(data.categories_desc_uk as Record<string, string>)
           }
 
-          const isMobile = window.innerWidth <= 640
-          if (isMobile) {
-            const link = document.createElement('link')
-            link.rel = 'preload'
-            link.as = 'image'
-            link.href = '/hero-bg-mobile.webp'
-            document.head.appendChild(link)
-            const img = new Image()
-            img.src = '/hero-bg-mobile.webp'
-          } else {
+          const preloadVideo = (src: string) => {
             const video = document.createElement('video')
             video.preload = 'auto'
             video.muted = true
             video.playsInline = true
-            video.src = '/hero-bg.mp4'
+            video.src = src
             video.load()
             video.play().catch(() => {})
             setTimeout(() => { video.pause(); video.currentTime = 0 }, 500)
           }
+          preloadVideo(window.innerWidth <= 640 ? '/hero-bg-mobile.mp4' : '/hero-bg.mp4')
         }}
       />
     )
