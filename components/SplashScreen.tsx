@@ -7,21 +7,25 @@ import { img } from '@/lib/constants'
 export default function SplashScreen({ onReady, onUserTap }: { onReady: () => void; onUserTap?: () => void }) {
   const [state, setState] = useState<'enter' | 'exit'>('enter')
   const tapped = useRef(false)
+  const onReadyRef = useRef(onReady)
+  const onUserTapRef = useRef(onUserTap)
+  onReadyRef.current = onReady
+  onUserTapRef.current = onUserTap
 
   useEffect(() => {
     const id = setTimeout(() => {
       setState('exit')
-      setTimeout(() => onReady(), 300)
+      setTimeout(() => onReadyRef.current(), 300)
     }, 5000)
     return () => clearTimeout(id)
-  }, [onReady])
+  }, [])
 
   const handleInteraction = () => {
     if (tapped.current) return
     tapped.current = true
-    onUserTap?.()
+    onUserTapRef.current?.()
     setState('exit')
-    setTimeout(() => onReady(), 300)
+    setTimeout(() => onReadyRef.current(), 300)
   }
 
   return (

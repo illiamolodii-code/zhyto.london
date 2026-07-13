@@ -11,12 +11,20 @@ export default function HeroSection() {
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
-    const tryPlay = () => video.play().catch(() => {})
-    if (video.readyState >= 2) {
-      tryPlay()
-    } else {
-      video.addEventListener('loadeddata', tryPlay, { once: true })
+
+    let stopped = false
+
+    const tryPlay = () => {
+      if (stopped) return
+      video.muted = true
+      video.play().catch(() => {
+        setTimeout(tryPlay, 400)
+      })
     }
+
+    tryPlay()
+
+    return () => { stopped = true }
   }, [])
 
   return (
@@ -30,7 +38,7 @@ export default function HeroSection() {
         playsInline
         preload="auto"
         disableRemotePlayback
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover"
       >
         <source src={img('/hero-bg-mobile.mp4')} media="(max-width: 640px)" />
         <source src={img('/hero-bg.mp4')} />
