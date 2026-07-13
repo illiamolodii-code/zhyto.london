@@ -12,11 +12,9 @@ export default function HeroSection() {
         <source
           media="(max-width: 640px)"
           srcSet={img('/hero-bg-mobile.webp')}
-          type="image/webp"
         />
-        <source srcSet={img('/hero-bg.webp')} type="image/webp" />
         <img
-          src={img('/images/hero-bg.webp')}
+          src={img('/hero-bg.webp')}
           alt=""
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"
           loading="eager"
