@@ -11,7 +11,7 @@ export default function SplashScreen({ onReady, onUserTap }: { onReady: () => vo
     const id = setTimeout(() => {
       setState('exit')
       setTimeout(() => onReady(), 300)
-    }, 300)
+    }, 1000)
     return () => clearTimeout(id)
   }, [onReady])
 
