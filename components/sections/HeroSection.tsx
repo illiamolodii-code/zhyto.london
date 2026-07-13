@@ -11,7 +11,12 @@ export default function HeroSection() {
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
-    video.play().catch(() => setTimeout(() => video.play().catch(() => {}), 300))
+    const tryPlay = () => video.play().catch(() => {})
+    if (video.readyState >= 2) {
+      tryPlay()
+    } else {
+      video.addEventListener('loadeddata', tryPlay, { once: true })
+    }
   }, [])
 
   return (

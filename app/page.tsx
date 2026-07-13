@@ -154,7 +154,12 @@ export default function Home() {
           onReady={() => setReady(true)}
           onUserTap={() => {
             const video = document.querySelector('video')
-            if (video) video.play().catch(() => {})
+            if (!video) return
+            video.muted = true
+            video.play().catch(() => {
+              const tryPlay = () => video.play().catch(() => {})
+              video.addEventListener('canplay', tryPlay, { once: true })
+            })
           }}
         />
       )}
