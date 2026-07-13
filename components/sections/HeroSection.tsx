@@ -1,26 +1,33 @@
 "use client"
 
+import { useRef, useEffect } from 'react'
 import { useLanguage } from '@/components/language-context'
 import { img } from '@/lib/constants'
 
 export default function HeroSection() {
   const { t } = useLanguage()
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    video.src = img(window.innerWidth <= 640 ? '/hero-bg-mobile.mp4' : '/hero-bg.mp4')
+    video.load()
+    video.play().catch(() => {})
+  }, [])
 
   return (
     <section className="relative min-h-dvh max-h-[720px] flex flex-col items-center justify-center overflow-hidden bg-black">
-      <picture>
-        <source
-          media="(max-width: 640px)"
-          srcSet={img('/hero-bg-mobile.webp')}
-        />
-        <img
-          src={img('/hero-bg.webp')}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-          loading="eager"
-          decoding="async"
-        />
-      </picture>
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        disableRemotePlayback
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+      />
       <div className="absolute inset-0 bg-black/40" />
       <div className="relative z-10 w-full max-w-5xl mx-auto px-5 sm:px-10 text-center pt-20 sm:pt-24 md:pt-28 lg:pt-36">
         <h1 className="text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] font-serif font-light leading-[1.1] mb-10 relative tracking-[0.05em]">
