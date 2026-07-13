@@ -18,7 +18,7 @@ export default function HeroSection() {
       if (stopped) return
       video.muted = true
       video.play().catch(() => {
-        setTimeout(tryPlay, 400)
+        setTimeout(tryPlay, 200)
       })
     }
 
