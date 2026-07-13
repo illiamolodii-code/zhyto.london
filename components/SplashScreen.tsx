@@ -58,7 +58,7 @@ export default function SplashScreen({ onReady, onLoad }: { onReady: () => void;
       }`}
       style={{ pointerEvents: state === 'exit' ? 'none' : 'auto' }}
     >
-      <div className="relative w-72 h-72 md:w-96 md:h-96">
+      <div className="relative w-72 h-72 md:w-96 md:h-96 animate-breath">
         <Image
           src={img("/images/dsfsjfos.png")}
           alt="zhyto"
