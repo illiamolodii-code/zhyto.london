@@ -124,47 +124,33 @@ export default function Home() {
     return () => clearTimeout(timeout)
   }, [])
 
-  if (!ready) {
-    return (
-      <SplashScreen
-        onReady={() => setReady(true)}
-        onLoad={async () => {
-          const [productsRes, settingsRes] = await Promise.all([
-            fetch('/api/products').catch(() => null),
-            fetch('/api/public-settings').catch(() => null),
-          ])
-          if (productsRes?.ok) {
-            const data = await productsRes.json()
-            setPreloadedProducts(data || [])
-          }
-          if (settingsRes?.ok) {
-            const data = await settingsRes.json()
-            if (data.categories) setPreloadedCategoryOrder(data.categories as string[])
-            if (data.categories_names) setPreloadedCategoryNames(data.categories_names as Record<string, string>)
-            if (data.categories_desc) setPreloadedCategoryDescriptions(data.categories_desc as Record<string, string>)
-            if (data.categories_names_pl) setPreloadedCategoryNamesPl(data.categories_names_pl as Record<string, string>)
-            if (data.categories_desc_pl) setPreloadedCategoryDescPl(data.categories_desc_pl as Record<string, string>)
-            if (data.categories_desc_uk) setPreloadedCategoryDescUk(data.categories_desc_uk as Record<string, string>)
-          }
-
-          const preloadVideo = (src: string) => {
-            const video = document.createElement('video')
-            video.preload = 'auto'
-            video.muted = true
-            video.playsInline = true
-            video.src = src
-            video.load()
-            video.play().catch(() => {})
-            setTimeout(() => { video.pause(); video.currentTime = 0 }, 500)
-          }
-          preloadVideo(window.innerWidth <= 640 ? '/hero-bg-mobile.mp4' : '/hero-bg.mp4')
-        }}
-      />
-    )
-  }
-
   return (
-    <main className="min-h-screen bg-background">
+    <>
+      {!ready && (
+        <SplashScreen
+          onReady={() => setReady(true)}
+          onLoad={async () => {
+            const [productsRes, settingsRes] = await Promise.all([
+              fetch('/api/products').catch(() => null),
+              fetch('/api/public-settings').catch(() => null),
+            ])
+            if (productsRes?.ok) {
+              const data = await productsRes.json()
+              setPreloadedProducts(data || [])
+            }
+            if (settingsRes?.ok) {
+              const data = await settingsRes.json()
+              if (data.categories) setPreloadedCategoryOrder(data.categories as string[])
+              if (data.categories_names) setPreloadedCategoryNames(data.categories_names as Record<string, string>)
+              if (data.categories_desc) setPreloadedCategoryDescriptions(data.categories_desc as Record<string, string>)
+              if (data.categories_names_pl) setPreloadedCategoryNamesPl(data.categories_names_pl as Record<string, string>)
+              if (data.categories_desc_pl) setPreloadedCategoryDescPl(data.categories_desc_pl as Record<string, string>)
+              if (data.categories_desc_uk) setPreloadedCategoryDescUk(data.categories_desc_uk as Record<string, string>)
+            }
+          }}
+        />
+      )}
+      <main className="min-h-screen bg-background">
         <Header setCartOpen={setCartOpen} setSignInModalOpen={setSignInModalOpen} headerMode={headerMode} />
         <HeroSection />
       <SectionWave color="#f5ead6" animate overlap />
@@ -209,5 +195,6 @@ export default function Home() {
         checkoutOpen={checkoutOpen}
       />
     </main>
+    </>
   )
 }
