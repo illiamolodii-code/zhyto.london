@@ -36,6 +36,7 @@ export default function HeroSection() {
         className="absolute inset-0 w-full h-full object-cover pointer-events-none hidden sm:block"
       />
       <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 pointer-events-none opacity-[12%] mix-blend-overlay" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }} />
       <div className="relative z-10 w-full max-w-5xl mx-auto px-5 sm:px-10 text-center pt-20 sm:pt-24 md:pt-28 lg:pt-36">
         <h1 className="text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] font-serif font-light leading-[1.1] mb-10 relative tracking-[0.05em]">
           <span className="font-script text-cream text-[0.7em] uppercase tracking-[0.05em]">
