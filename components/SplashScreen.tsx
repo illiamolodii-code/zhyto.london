@@ -17,11 +17,9 @@ export default function SplashScreen({ onReady }: { onReady: () => void }) {
       count++
       if (count >= frames) {
         setState('exit')
-        document.fonts.ready.then(() => {
-          setTimeout(() => {
-            if (!cancelled) onReady()
-          }, 600)
-        })
+        setTimeout(() => {
+          if (!cancelled) onReady()
+        }, 600)
       } else {
         requestAnimationFrame(tick)
       }
