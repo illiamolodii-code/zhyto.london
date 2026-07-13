@@ -42,9 +42,21 @@ interface Product {
 interface ProductsSectionProps {
   onProductsChange?: (products: Product[]) => void
   setCartOpen: (open: boolean) => void
+  preloadedProducts?: Product[] | null
+  preloadedCategoryOrder?: string[] | null
+  preloadedCategoryNames?: Record<string, string>
+  preloadedCategoryDescriptions?: Record<string, string>
+  preloadedCategoryNamesPl?: Record<string, string>
+  preloadedCategoryDescPl?: Record<string, string>
+  preloadedCategoryDescUk?: Record<string, string>
 }
 
-export default function ProductsSection({ onProductsChange, setCartOpen }: ProductsSectionProps) {
+export default function ProductsSection({
+  onProductsChange, setCartOpen,
+  preloadedProducts, preloadedCategoryOrder, preloadedCategoryNames,
+  preloadedCategoryDescriptions, preloadedCategoryNamesPl,
+  preloadedCategoryDescPl, preloadedCategoryDescUk,
+}: ProductsSectionProps) {
   const { t, lang } = useLanguage()
   const { cart, addToCart, removeFromCart, keepOnly } = useCart()
   const [products, setProducts] = useState<Product[] | null>(null)
@@ -57,6 +69,13 @@ export default function ProductsSection({ onProductsChange, setCartOpen }: Produ
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
 
   useEffect(() => {
+    if (preloadedProducts) {
+      const mapped = preloadedProducts
+      setProducts(mapped)
+      if (mapped.length > 0) keepOnly(mapped.map((p: Product) => p.id))
+      onProductsChange?.(mapped)
+      return
+    }
     const fetchProducts = async () => {
       try {
         const res = await fetch('/api/products')
@@ -95,9 +114,17 @@ export default function ProductsSection({ onProductsChange, setCartOpen }: Produ
       } catch {}
     }
     fetchProducts()
-  }, [keepOnly, onProductsChange])
+  }, [keepOnly, onProductsChange, preloadedProducts])
 
   useEffect(() => {
+    if (preloadedCategoryOrder) setCategoryOrder(preloadedCategoryOrder)
+    if (preloadedCategoryDescriptions) setCategoryDescriptions(preloadedCategoryDescriptions)
+    if (preloadedCategoryNames) setCategoryNames(preloadedCategoryNames)
+    if (preloadedCategoryDescUk) setCategoryDescUk(preloadedCategoryDescUk)
+    if (preloadedCategoryNamesPl) setCategoryNamesPl(preloadedCategoryNamesPl)
+    if (preloadedCategoryDescPl) setCategoryDescPl(preloadedCategoryDescPl)
+    if (preloadedCategoryOrder) return
+
     const fetchSettings = async () => {
       try {
         const res = await fetch('/api/public-settings')
@@ -112,7 +139,10 @@ export default function ProductsSection({ onProductsChange, setCartOpen }: Produ
       } catch {}
     }
     fetchSettings()
-  }, [])
+  }, [
+    preloadedCategoryOrder, preloadedCategoryDescriptions, preloadedCategoryNames,
+    preloadedCategoryDescUk, preloadedCategoryNamesPl, preloadedCategoryDescPl,
+  ])
 
   const activeProducts = (products || []).filter(p => p.available !== false)
 

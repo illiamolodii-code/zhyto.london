@@ -1,33 +1,55 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Image from 'next/image'
 import { img } from '@/lib/constants'
 
-export default function SplashScreen({ onReady }: { onReady: () => void }) {
+export default function SplashScreen({ onReady, onLoad }: { onReady: () => void; onLoad?: () => Promise<any> }) {
   const [state, setState] = useState<'enter' | 'visible' | 'exit'>('enter')
+  const dataLoaded = useRef(false)
+  const animDone = useRef(false)
 
   useEffect(() => {
     let cancelled = false
     const frames = 8
     let count = 0
 
+    const tryReady = () => {
+      if (!cancelled && dataLoaded.current && animDone.current) {
+        setState('exit')
+        setTimeout(() => {
+          if (!cancelled) onReady()
+        }, 300)
+      }
+    }
+
     const tick = () => {
       if (cancelled) return
       count++
       if (count >= frames) {
-        setState('exit')
-        setTimeout(() => {
-          if (!cancelled) onReady()
-        }, 600)
+        animDone.current = true
+        tryReady()
       } else {
         requestAnimationFrame(tick)
       }
     }
 
     requestAnimationFrame(tick)
+
+    if (onLoad) {
+      onLoad().then(() => {
+        dataLoaded.current = true
+        tryReady()
+      }).catch(() => {
+        dataLoaded.current = true
+        tryReady()
+      })
+    } else {
+      dataLoaded.current = true
+    }
+
     return () => { cancelled = true }
-  }, [onReady])
+  }, [onReady, onLoad])
 
   return (
     <div
