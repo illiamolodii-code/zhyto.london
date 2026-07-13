@@ -8,14 +8,18 @@ export default function HeroSection() {
 
   return (
     <section className="relative min-h-dvh max-h-[720px] flex flex-col items-center justify-center overflow-hidden bg-black">
-      <picture>
-        <source media="(max-width: 640px)" srcSet={img('/hero-bg-mobile.webp')} />
-        <img
-          src={img('/hero-bg.webp')}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-        />
-      </picture>
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        disableRemotePlayback
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+      >
+        <source src={img('/hero-bg-mobile.mp4')} media="(max-width: 640px)" />
+        <source src={img('/hero-bg.mp4')} type="video/mp4" />
+      </video>
       <div className="absolute inset-0 bg-black/40" />
       <div className="relative z-10 w-full max-w-5xl mx-auto px-5 sm:px-10 text-center pt-20 sm:pt-24 md:pt-28 lg:pt-36">
         <h1 className="hero-delay-1 text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] font-serif font-light leading-[1.1] mb-10 relative tracking-[0.05em]">
