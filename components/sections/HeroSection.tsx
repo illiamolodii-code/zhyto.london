@@ -13,6 +13,7 @@ export default function HeroSection() {
         muted
         loop
         playsInline
+        webkit-playsinline
         preload="auto"
         disableRemotePlayback
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
