@@ -11,13 +11,20 @@ export default function HeroSection() {
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
-    video.src = img(window.innerWidth <= 640 ? '/hero-bg-mobile.mp4' : '/hero-bg.mp4')
+    video.src = img('/hero-bg.mp4')
     video.load()
     video.play().catch(() => {})
   }, [])
 
   return (
     <section className="relative min-h-dvh max-h-[720px] flex flex-col items-center justify-center overflow-hidden bg-black">
+      <img
+        src={img('/hero-bg-mobile.webp')}
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none sm:hidden"
+        loading="eager"
+        decoding="async"
+      />
       <video
         ref={videoRef}
         autoPlay
@@ -26,7 +33,7 @@ export default function HeroSection() {
         playsInline
         preload="auto"
         disableRemotePlayback
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none hidden sm:block"
       />
       <div className="absolute inset-0 bg-black/40" />
       <div className="relative z-10 w-full max-w-5xl mx-auto px-5 sm:px-10 text-center pt-20 sm:pt-24 md:pt-28 lg:pt-36">
