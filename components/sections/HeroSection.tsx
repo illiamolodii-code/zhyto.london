@@ -37,6 +37,7 @@ export default function HeroSection() {
         playsInline
         preload="auto"
         disableRemotePlayback
+        poster={img('/images/hero-bg.webp')}
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
       />
       <div className="absolute inset-0 bg-black/40" />
