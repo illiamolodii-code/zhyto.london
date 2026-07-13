@@ -19,7 +19,7 @@ export default function SplashScreen({ onReady, onLoad }: { onReady: () => void;
         setState('exit')
         setTimeout(() => {
           if (!cancelled) onReady()
-        }, 300)
+        }, 200)
       }
     }
 
