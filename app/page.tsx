@@ -129,6 +129,10 @@ export default function Home() {
       {!ready && (
         <SplashScreen
           onReady={() => setReady(true)}
+          onUserTap={() => {
+            const video = document.querySelector('video')
+            if (video) video.play().catch(() => {})
+          }}
           onLoad={async () => {
             const [productsRes, settingsRes] = await Promise.all([
               fetch('/api/products').catch(() => null),
