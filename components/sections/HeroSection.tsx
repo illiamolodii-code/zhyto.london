@@ -31,7 +31,7 @@ export default function HeroSection() {
         <div className="hero-delay-4">
           <a
             href="#products"
-            className="group inline-flex items-center gap-5 text-cream text-2xl sm:text-3xl lg:text-4xl tracking-[0.35em] transition-all duration-300 px-10 py-5 sm:px-14 sm:py-6 bg-black/20 backdrop-blur-sm rounded-lg"
+            className="group inline-flex items-center gap-5 text-cream text-2xl sm:text-3xl lg:text-4xl tracking-[0.35em] transition-all duration-300 px-10 py-5 sm:px-14 sm:py-6 bg-black/20 backdrop-blur-[1px] rounded-lg"
           >
             <span className="font-script">{t.hero.orderNow}</span>
           </a>
