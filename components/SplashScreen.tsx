@@ -1,56 +1,21 @@
 "use client"
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { img } from '@/lib/constants'
 
-export default function SplashScreen({ onReady, onLoad, onUserTap }: { onReady: () => void; onLoad?: () => Promise<any>; onUserTap?: () => void }) {
-  const [state, setState] = useState<'enter' | 'visible' | 'exit'>('enter')
-  const [canDismiss, setCanDismiss] = useState(false)
-  const dataLoaded = useRef(false)
-  const animDone = useRef(false)
+export default function SplashScreen({ onReady, onUserTap }: { onReady: () => void; onUserTap?: () => void }) {
+  const [state, setState] = useState<'enter' | 'exit'>('enter')
 
   useEffect(() => {
-    let cancelled = false
-    const frames = 8
-    let count = 0
-
-    const tryReady = () => {
-      if (!cancelled && dataLoaded.current && animDone.current) {
-        setCanDismiss(true)
-      }
-    }
-
-    const tick = () => {
-      if (cancelled) return
-      count++
-      if (count >= frames) {
-        animDone.current = true
-        tryReady()
-      } else {
-        requestAnimationFrame(tick)
-      }
-    }
-
-    requestAnimationFrame(tick)
-
-    if (onLoad) {
-      onLoad().then(() => {
-        dataLoaded.current = true
-        tryReady()
-      }).catch(() => {
-        dataLoaded.current = true
-        tryReady()
-      })
-    } else {
-      dataLoaded.current = true
-    }
-
-    return () => { cancelled = true }
-  }, [onReady, onLoad])
+    const id = setTimeout(() => {
+      setState('exit')
+      setTimeout(() => onReady(), 300)
+    }, 300)
+    return () => clearTimeout(id)
+  }, [onReady])
 
   const handleInteraction = () => {
-    if (!canDismiss || state === 'exit') return
     onUserTap?.()
     setState('exit')
     setTimeout(() => onReady(), 300)

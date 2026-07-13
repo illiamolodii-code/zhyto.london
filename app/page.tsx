@@ -124,6 +124,29 @@ export default function Home() {
     return () => clearTimeout(timeout)
   }, [])
 
+  useEffect(() => {
+    const loadData = async () => {
+      const [productsRes, settingsRes] = await Promise.all([
+        fetch('/api/products').catch(() => null),
+        fetch('/api/public-settings').catch(() => null),
+      ])
+      if (productsRes?.ok) {
+        const data = await productsRes.json()
+        setPreloadedProducts(data || [])
+      }
+      if (settingsRes?.ok) {
+        const data = await settingsRes.json()
+        if (data.categories) setPreloadedCategoryOrder(data.categories as string[])
+        if (data.categories_names) setPreloadedCategoryNames(data.categories_names as Record<string, string>)
+        if (data.categories_desc) setPreloadedCategoryDescriptions(data.categories_desc as Record<string, string>)
+        if (data.categories_names_pl) setPreloadedCategoryNamesPl(data.categories_names_pl as Record<string, string>)
+        if (data.categories_desc_pl) setPreloadedCategoryDescPl(data.categories_desc_pl as Record<string, string>)
+        if (data.categories_desc_uk) setPreloadedCategoryDescUk(data.categories_desc_uk as Record<string, string>)
+      }
+    }
+    loadData()
+  }, [])
+
   return (
     <>
       {!ready && (
@@ -132,25 +155,6 @@ export default function Home() {
           onUserTap={() => {
             const video = document.querySelector('video')
             if (video) video.play().catch(() => {})
-          }}
-          onLoad={async () => {
-            const [productsRes, settingsRes] = await Promise.all([
-              fetch('/api/products').catch(() => null),
-              fetch('/api/public-settings').catch(() => null),
-            ])
-            if (productsRes?.ok) {
-              const data = await productsRes.json()
-              setPreloadedProducts(data || [])
-            }
-            if (settingsRes?.ok) {
-              const data = await settingsRes.json()
-              if (data.categories) setPreloadedCategoryOrder(data.categories as string[])
-              if (data.categories_names) setPreloadedCategoryNames(data.categories_names as Record<string, string>)
-              if (data.categories_desc) setPreloadedCategoryDescriptions(data.categories_desc as Record<string, string>)
-              if (data.categories_names_pl) setPreloadedCategoryNamesPl(data.categories_names_pl as Record<string, string>)
-              if (data.categories_desc_pl) setPreloadedCategoryDescPl(data.categories_desc_pl as Record<string, string>)
-              if (data.categories_desc_uk) setPreloadedCategoryDescUk(data.categories_desc_uk as Record<string, string>)
-            }
           }}
         />
       )}
