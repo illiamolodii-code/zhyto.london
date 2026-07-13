@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Minus, Plus, X } from 'lucide-react'
 import Image from 'next/image'
@@ -59,21 +59,25 @@ export default function ProductsSection({
 }: ProductsSectionProps) {
   const { t, lang } = useLanguage()
   const { cart, addToCart, removeFromCart, keepOnly } = useCart()
-  const [products, setProducts] = useState<Product[] | null>(null)
-  const [categoryOrder, setCategoryOrder] = useState<string[] | null>(null)
-  const [categoryDescriptions, setCategoryDescriptions] = useState<Record<string, string>>({})
-  const [categoryNames, setCategoryNames] = useState<Record<string, string>>({})
-  const [categoryDescUk, setCategoryDescUk] = useState<Record<string, string>>({})
-  const [categoryNamesPl, setCategoryNamesPl] = useState<Record<string, string>>({})
-  const [categoryDescPl, setCategoryDescPl] = useState<Record<string, string>>({})
+  const [products, setProducts] = useState<Product[] | null>(
+    preloadedProducts && preloadedProducts.length > 0 ? preloadedProducts : null
+  )
+  const [categoryOrder, setCategoryOrder] = useState<string[] | null>(preloadedCategoryOrder || null)
+  const [categoryDescriptions, setCategoryDescriptions] = useState<Record<string, string>>(preloadedCategoryDescriptions)
+  const [categoryNames, setCategoryNames] = useState<Record<string, string>>(preloadedCategoryNames)
+  const [categoryDescUk, setCategoryDescUk] = useState<Record<string, string>>(preloadedCategoryDescUk)
+  const [categoryNamesPl, setCategoryNamesPl] = useState<Record<string, string>>(preloadedCategoryNamesPl)
+  const [categoryDescPl, setCategoryDescPl] = useState<Record<string, string>>(preloadedCategoryDescPl)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+  const initialized = useRef(false)
 
   useEffect(() => {
-    if (preloadedProducts) {
-      const mapped = preloadedProducts
-      setProducts(mapped)
-      if (mapped.length > 0) keepOnly(mapped.map((p: Product) => p.id))
-      onProductsChange?.(mapped)
+    if (initialized.current) return
+    initialized.current = true
+
+    if (preloadedProducts && preloadedProducts.length > 0) {
+      if (preloadedProducts.length > 0) keepOnly(preloadedProducts.map((p: Product) => p.id))
+      onProductsChange?.(preloadedProducts)
       return
     }
     const fetchProducts = async () => {
