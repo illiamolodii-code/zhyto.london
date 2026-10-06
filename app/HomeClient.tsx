@@ -39,6 +39,11 @@ export default function HomeClient({
   const [signInModalOpen, setSignInModalOpen] = useState(false)
   const [activeProducts, setActiveProducts] = useState<any[]>([])
 
+  useEffect(() => {
+    const id = setTimeout(() => setReady(true), 3500)
+    return () => clearTimeout(id)
+  }, [])
+
   const [headerMode, setHeaderMode] = useState<'visible' | 'hidden'>('visible')
   const [isOnProducts, setIsOnProducts] = useState(false)
   const [showScrollTop, setShowScrollTop] = useState(false)
