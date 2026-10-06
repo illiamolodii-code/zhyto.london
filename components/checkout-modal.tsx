@@ -309,7 +309,7 @@ export function CheckoutModal({ open, onOpenChange, products }: CheckoutModalPro
         >
           <span className="inline-flex items-center justify-center gap-3">
             <Instagram className="w-5 h-5" />
-            {t.checkout.orderViaInstagram}
+            {t.checkout.orderNow}
           </span>
         </button>
       </div>
