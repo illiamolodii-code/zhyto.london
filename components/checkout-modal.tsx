@@ -13,10 +13,9 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useCart } from '@/components/cart-context'
-import { useAuth } from '@/components/auth-context'
 import { InstagramOrderModal } from '@/components/instagram-order-modal'
 import { toast } from 'sonner'
-import { Package, Truck, Percent, Chrome, Instagram } from 'lucide-react'
+import { Truck, Percent, Instagram } from 'lucide-react'
 import { useDeliverySettings, calcDelivery } from '@/lib/use-delivery'
 import { useLanguage } from '@/components/language-context'
 
@@ -34,13 +33,16 @@ interface CheckoutModalProps {
 
 export function CheckoutModal({ open, onOpenChange, products }: CheckoutModalProps) {
   const { cart } = useCart()
-  const { user, loading: authLoading, signInWithGoogle } = useAuth()
   const { settings } = useDeliverySettings()
   const { t } = useLanguage()
   const [showPayment, setShowPayment] = useState(false)
   const [instagramModalOpen, setInstagramModalOpen] = useState(false)
   const [deliveryAddress, setDeliveryAddress] = useState(() => {
     if (typeof window !== 'undefined') return localStorage.getItem('zhyto-address') || ''
+    return ''
+  })
+  const [phone, setPhone] = useState(() => {
+    if (typeof window !== 'undefined') return localStorage.getItem('zhyto-phone') || ''
     return ''
   })
   const [promoInput, setPromoInput] = useState('')
@@ -96,6 +98,10 @@ export function CheckoutModal({ open, onOpenChange, products }: CheckoutModalPro
     try { localStorage.setItem('zhyto-address', deliveryAddress) } catch {}
   }, [deliveryAddress])
 
+  useEffect(() => {
+    try { localStorage.setItem('zhyto-phone', phone) } catch {}
+  }, [phone])
+
   const cartItems = Object.entries(cart)
     .map(([id, item]) => {
       const product = products.find(p => p.id === Number(id))
@@ -146,23 +152,19 @@ export function CheckoutModal({ open, onOpenChange, products }: CheckoutModalPro
     ...cartItems.map(i => `- ${i.qty}x ${i.name} = £${(i.price * i.qty).toFixed(2)}`),
     `Delivery: ${delivery === null ? 'N/A' : delivery === 0 ? 'FREE' : `£${delivery.toFixed(2)}`}`,
     `Total: £${total.toFixed(2)}`,
+    phone.trim() ? `Phone: ${phone.trim()}` : null,
     deliveryAddress.trim() ? `Address: ${deliveryAddress.trim()}` : null,
     postcodeInfo ? `Postcode: ${postcodeInput.toUpperCase()} (${postcodeInfo.district}${postcodeInfo.region ? `, ${postcodeInfo.region}` : ''})` : null,
   ].filter(Boolean).join('\n')
 
   const renderPaymentStep = () => (
     <div className="space-y-5">
-      {/* User summary */}
-      {user && (
-        <div className="glass-card rounded-lg p-4 space-y-2">
-          <div className="flex items-center gap-2 text-base tracking-[0.2em] text-foreground/60 mb-2">
-            <Package className="w-3.5 h-3.5" />
-            {t.checkout.account}
-          </div>
-          <p className="text-[18px] text-foreground">{user.user_metadata?.full_name || ''}</p>
-          <p className="text-[16px] text-foreground/60">{user.email}</p>
-        </div>
-      )}
+      <button
+        onClick={() => setShowPayment(false)}
+        className="text-[15px] text-foreground/60 hover:text-foreground tracking-[0.15em] cursor-pointer underline underline-offset-4"
+      >
+        {t.checkout.back}
+      </button>
 
       {/* Delivery address */}
       <div className="space-y-1.5">
@@ -217,6 +219,16 @@ export function CheckoutModal({ open, onOpenChange, products }: CheckoutModalPro
           onChange={e => setDeliveryAddress(e.target.value)}
           className="bg-transparent border-border/50 text-foreground text-[16px] rounded-none focus:border-primary min-h-[60px]"
           placeholder={t.checkout.addressPlaceholder}
+        />
+        <Label htmlFor="checkout-phone" className="text-[18px] text-foreground/60 tracking-[0.1em] pt-2">
+          {t.checkout.phoneLabel}
+        </Label>
+        <input
+          id="checkout-phone"
+          value={phone}
+          onChange={e => setPhone(e.target.value)}
+          className="w-full bg-transparent border border-border/50 rounded-lg px-4 py-2.5 text-[16px] text-foreground focus:border-primary outline-none"
+          placeholder={t.checkout.phonePlaceholder}
         />
       </div>
 
@@ -292,7 +304,7 @@ export function CheckoutModal({ open, onOpenChange, products }: CheckoutModalPro
         </p>
         <button
           onClick={handleContinueToPayment}
-          disabled={!deliveryAddress.trim()}
+          disabled={!deliveryAddress.trim() || !phone.trim()}
           className="w-full py-4 text-[16px] tracking-[0.2em] rounded-none bg-primary text-primary-foreground hover:bg-primary/90 gold-glow disabled:opacity-50 cursor-pointer"
         >
           <span className="inline-flex items-center justify-center gap-3">
@@ -320,14 +332,10 @@ export function CheckoutModal({ open, onOpenChange, products }: CheckoutModalPro
       <DialogContent className="bg-background border-border/30 sm:max-w-lg max-h-[100dvh] sm:max-h-[90vh] flex flex-col p-4 sm:p-6 max-sm:max-w-full max-sm:rounded-none max-sm:left-0 max-sm:right-0 max-sm:bottom-0 max-sm:top-auto max-sm:translate-y-0 max-sm:translate-x-0 max-sm:overflow-x-hidden gap-2">
         <DialogHeader>
           <DialogTitle className="font-serif text-2xl tracking-[0.1em] text-foreground">
-            {showPayment ? t.checkout.paySecurely : user ? t.checkout.checkout : t.checkout.signIn}
+            {t.checkout.checkout}
           </DialogTitle>
           <DialogDescription className="text-[16px] tracking-[0.2em] text-foreground/60">
-            {showPayment
-              ? t.checkout.completePayment
-              : user
-                ? t.checkout.reviewOrder.replace('{count}', String(cartItems.reduce((s, i) => s + i.qty, 0)))
-                : t.checkout.signInToOrder}
+            {t.checkout.reviewOrder.replace('{count}', String(cartItems.reduce((s, i) => s + i.qty, 0)))}
           </DialogDescription>
         </DialogHeader>
 
@@ -335,21 +343,11 @@ export function CheckoutModal({ open, onOpenChange, products }: CheckoutModalPro
           <div className="pb-4 max-sm:overflow-x-hidden">
           {!showPayment ? (
             <div className="space-y-5">
-              {cartItems.length === 0 && !user && (
+              {cartItems.length === 0 && (
                 <div className="glass-card rounded-lg p-5 space-y-4">
                   <p className="text-base tracking-[0.2em] text-foreground/60 text-center">
-                    {t.checkout.signInToCheckout}
+                    {t.cart.cartEmpty}
                   </p>
-                  <p className="text-[16px] text-muted-foreground text-center leading-relaxed">
-                    {t.checkout.signInDesc}
-                  </p>
-                  <button
-                    onClick={signInWithGoogle}
-                    className="w-full flex items-center justify-center gap-3 border border-border/50 rounded-lg px-4 py-3 text-base text-foreground hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer"
-                  >
-                    <Chrome className="w-5 h-5" />
-                    {t.checkout.signInWithGoogle}
-                  </button>
                 </div>
               )}
 
@@ -375,30 +373,6 @@ export function CheckoutModal({ open, onOpenChange, products }: CheckoutModalPro
                     </div>
                   </div>
 
-                  {!user && !authLoading && (
-                    <div className="glass-card rounded-lg p-5 space-y-4">
-                      <p className="text-base tracking-[0.2em] text-foreground/60 text-center">
-                        {t.checkout.signInToCheckout}
-                      </p>
-                      <p className="text-[16px] text-muted-foreground text-center leading-relaxed">
-                        {t.checkout.signInDesc}
-                      </p>
-                      <button
-                        onClick={signInWithGoogle}
-                        className="w-full flex items-center justify-center gap-3 border border-border/50 rounded-lg px-4 py-3 text-base text-foreground hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer"
-                      >
-                        <Chrome className="w-5 h-5" />
-                        {t.checkout.signInWithGoogle}
-                      </button>
-                    </div>
-                  )}
-
-                  {user && !showPayment && (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
-                    </div>
-                  )}
-
                   {delivery !== null && delivery > 0 && (
                     <div className="flex items-center gap-3 text-[16px] text-foreground/60 bg-border/10 rounded-lg px-4 py-3">
                       <Truck className="w-4 h-4 shrink-0 text-primary" />
@@ -422,10 +396,11 @@ export function CheckoutModal({ open, onOpenChange, products }: CheckoutModalPro
                     </Button>
                     <Button
                       type="button"
-                      disabled={cartItems.length === 0 || !user || subtotal < settings.min_order}
+                      onClick={() => setShowPayment(true)}
+                      disabled={cartItems.length === 0 || subtotal < settings.min_order}
                       className="flex-1 text-[16px] tracking-[0.2em] rounded-none bg-primary text-primary-foreground hover:bg-primary/90 gold-glow py-6 disabled:opacity-50 whitespace-normal text-balance"
                     >
-                      {!user ? t.checkout.signInToContinue : subtotal < settings.min_order ? t.checkout.minOrder.replace('{min}', String(settings.min_order)).replace('{amount}', (settings.min_order - subtotal).toFixed(0)) : t.checkout.continueToPay}
+                      {subtotal < settings.min_order ? t.checkout.minOrder.replace('{min}', String(settings.min_order)).replace('{amount}', (settings.min_order - subtotal).toFixed(0)) : t.checkout.continueToPay}
                     </Button>
                   </div>
                 </>
