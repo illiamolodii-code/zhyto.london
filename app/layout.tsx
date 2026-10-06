@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from 'next'
+import { headers } from 'next/headers'
 import localFont from 'next/font/local'
 import { Playfair_Display, Geist, Caveat } from 'next/font/google'
+import { LanguageProvider, type Lang } from '@/components/language-context'
 import { Analytics } from '@vercel/analytics/next'
 import { CartProvider } from '@/components/cart-context'
 import { AuthProvider } from '@/components/auth-context'
-import { LanguageProvider } from '@/components/language-context'
 import { CookieConsent } from '@/components/cookie-consent'
 import { Toaster } from '@/components/ui/sonner'
 import { NoiseOverlay } from '@/components/noise-overlay'
@@ -53,7 +54,6 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: 'zhyto.london | Authentic Ukrainian Varenyky & Syrnyky',
-    template: '%s | zhyto.london',
   },
   description: 'Handcrafted Ukrainian varenyky and syrnyky delivered to your door in London. Order authentic homemade dumplings online \u2014 same-day delivery across Zones 1\u20133, next-day for all London.',
   keywords: [
@@ -71,9 +71,6 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
     googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
-  },
-  alternates: {
-    canonical: '/',
   },
   openGraph: {
     type: 'website',
@@ -117,11 +114,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const h = headers()
+  const locale = (h.get('x-locale') as Lang) || 'en'
   return (
-    <html lang="en" className={`${playfair.variable} ${zhyto.variable} ${geist.variable} ${caveat.variable} ${konstrukt.variable} ${epoch.variable} bg-background`} style={{ colorScheme: 'only light' }}>
+    <html lang={locale} className={`${playfair.variable} ${zhyto.variable} ${geist.variable} ${caveat.variable} ${konstrukt.variable} ${epoch.variable} bg-background`} style={{ colorScheme: 'only light' }}>
       <body className="font-serif antialiased">
         <AuthProvider>
-          <LanguageProvider>
+          <LanguageProvider initialLang={locale}>
           <CartProvider>
 {children}
             <NoiseOverlay />

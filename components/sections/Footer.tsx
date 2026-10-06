@@ -5,7 +5,14 @@ import { ArrowUp } from 'lucide-react'
 import { useLanguage } from '@/components/language-context'
 
 export default function Footer() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
+
+  const catLinks = [
+    { slug: 'varenyky', label: lang === 'uk' ? 'Вареники' : lang === 'pl' ? 'Warenyki' : 'Varenyky' },
+    { slug: 'syrnyky', label: lang === 'uk' ? 'Сирники' : lang === 'pl' ? 'Syrniki' : 'Syrnyky' },
+    { slug: 'pelmeni', label: lang === 'uk' ? 'Пельмені' : lang === 'pl' ? 'Pielmieni' : 'Pelmeni' },
+  ]
+  const prefix = lang === 'en' ? '' : `/${lang}`
 
   return (
     <footer className="py-28 bg-black relative">
@@ -14,7 +21,18 @@ export default function Footer() {
           <div className="text-2xl md:text-4xl font-serif tracking-[0.15em] text-cream">
             zhyto.london
           </div>
-          <div className="flex flex-col items-center md:items-center gap-2">
+          <div className="flex flex-col items-center gap-2">
+            <div className="flex items-center gap-4 text-sm md:text-base text-cream">
+              {catLinks.map(c => (
+                <Link
+                  key={c.slug}
+                  href={`${prefix}/${c.slug}`}
+                  className="text-cream/80 hover:text-white transition-colors tracking-[0.1em]"
+                >
+                  {c.label}
+                </Link>
+              ))}
+            </div>
             <p className="text-sm md:text-base xl:text-lg text-cream tracking-[0.15em]">
               {t.footer.rights}
             </p>

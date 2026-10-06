@@ -18,6 +18,8 @@ import SignInModal from '@/components/sections/SignInModal'
 import SplashScreen from '@/components/SplashScreen'
 
 export default function HomeClient({
+  lang,
+  initialCategory,
   preloadedProducts,
   preloadedCategoryOrder,
   preloadedCategoryNames,
@@ -26,6 +28,8 @@ export default function HomeClient({
   preloadedCategoryDescPl,
   preloadedCategoryDescUk,
 }: {
+  lang?: 'en' | 'uk' | 'pl'
+  initialCategory?: string | null
   preloadedProducts: any[] | null
   preloadedCategoryOrder: string[] | null
   preloadedCategoryNames: Record<string, string>
@@ -45,6 +49,9 @@ export default function HomeClient({
     return () => clearTimeout(id)
   }, [])
 
+  const categoryAnchor = initialCategory ? `#cat-${initialCategory}` : null
+  const didScroll = useRef(false)
+
   const [headerMode, setHeaderMode] = useState<'visible' | 'hidden'>('visible')
   const [isOnProducts, setIsOnProducts] = useState(false)
   const [showScrollTop, setShowScrollTop] = useState(false)
@@ -63,6 +70,19 @@ export default function HomeClient({
     const aboutEl = document.getElementById('about')
     if (aboutEl) aboutTopRef.current = aboutEl.offsetTop
   }, [])
+
+  useEffect(() => {
+    if (!ready || !categoryAnchor || didScroll.current) return
+    didScroll.current = true
+    const t = setTimeout(() => {
+      const el = document.getElementById(categoryAnchor.replace('#', ''))
+      if (el) {
+        const y = el.getBoundingClientRect().top + window.scrollY - 80
+        window.scrollTo({ top: y, behavior: 'smooth' })
+      }
+    }, 100)
+    return () => clearTimeout(t)
+  }, [ready, categoryAnchor])
 
   useEffect(() => {
     const lenis = new Lenis({ lerp: 0.08, wheelMultiplier: 1 })

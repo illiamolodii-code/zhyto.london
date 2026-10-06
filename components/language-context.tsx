@@ -1,11 +1,13 @@
 "use client"
 
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 import { translations, TranslationKeys } from '@/lib/translations'
 
-type Lang = 'en' | 'uk' | 'pl'
+export type Lang = 'en' | 'uk' | 'pl'
 
 const ALL_LANGS: Lang[] = ['en', 'uk', 'pl']
+const LS_KEY = 'zhyto-lang'
 
 interface LangContextType {
   lang: Lang
@@ -13,16 +15,6 @@ interface LangContextType {
   toggleLang: () => void
   setLang: (l: Lang) => void
   enabledLanguages: Lang[]
-}
-
-const LS_KEY = 'zhyto-lang'
-
-function getInitialLang(): Lang {
-  if (typeof window !== 'undefined') {
-    const stored = localStorage.getItem(LS_KEY)
-    if (stored === 'en' || stored === 'uk' || stored === 'pl') return stored
-  }
-  return 'en'
 }
 
 function deepMerge<T extends Record<string, any>>(defaults: T, overrides: Partial<T>): T {
@@ -49,13 +41,39 @@ const LangContext = createContext<LangContextType>({
   enabledLanguages: ALL_LANGS,
 })
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLang] = useState<Lang>('en')
+const CATEGORY_SLUGS = ['varenyky', 'syrnyky', 'pelmeni']
+
+function buildLocalePath(pathname: string, locale: Lang): string {
+  const segments = pathname.split('/').filter(Boolean)
+  const isLocalized = segments[0] === 'uk' || segments[0] === 'pl'
+  let rest: string[] = segments
+  if (isLocalized) rest = segments.slice(1)
+  else if (segments.length > 0 && !CATEGORY_SLUGS.includes(segments[0])) rest = []
+  const suffix = locale === 'en' ? '' : `/${locale}`
+  return `${suffix}/${rest.join('/')}`.replace(/\/+$/, '') || '/'
+}
+
+export function LanguageProvider({
+  children,
+  initialLang,
+}: {
+  children: ReactNode
+  initialLang?: Lang
+}) {
+  const pathname = usePathname()
+  const router = useRouter()
+  const [lang, setLangState] = useState<Lang>(initialLang || 'en')
   const [enabledLanguages, setEnabledLanguages] = useState<Lang[]>(ALL_LANGS)
   const [customTexts, setCustomTexts] = useState<{ en: Record<string, any>; uk: Record<string, any>; pl: Record<string, any> } | null>(null)
 
   useEffect(() => {
-    setLang(getInitialLang())
+    if (initialLang) {
+      setLangState(initialLang)
+      try { localStorage.setItem(LS_KEY, initialLang) } catch {}
+    }
+  }, [initialLang])
+
+  useEffect(() => {
     fetch('/api/public/texts')
       .then(r => r.json())
       .then(data => {
@@ -80,20 +98,21 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       }
     : translations
 
-  const setLangWithStore = (next: Lang) => {
+  const changeLang = (next: Lang) => {
+    if (next === lang) return
     if (!enabledLanguages.includes(next)) return
-    localStorage.setItem(LS_KEY, next)
-    setLang(next)
+    try { localStorage.setItem(LS_KEY, next) } catch {}
+    router.push(buildLocalePath(pathname || '', next))
   }
 
   const toggleLang = () => {
     const idx = enabledLanguages.indexOf(lang)
     const next = enabledLanguages[(idx + 1) % enabledLanguages.length]
-    setLangWithStore(next)
+    changeLang(next)
   }
 
   return (
-    <LangContext.Provider value={{ lang, t: merged[lang], toggleLang, setLang: setLangWithStore, enabledLanguages }}>
+    <LangContext.Provider value={{ lang, t: merged[lang], toggleLang, setLang: changeLang, enabledLanguages }}>
       <div data-lang={lang} style={{ display: 'contents' }}>
         {children}
       </div>
@@ -104,3 +123,5 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 export function useLanguage() {
   return useContext(LangContext)
 }
+
+export { ALL_LANGS }

@@ -890,6 +890,8 @@ export default function AdminProducts() {
           <p className="text-lg text-muted-foreground">No products yet. Add your first product.</p>
         </div>
       )}
+
+      <ImageMigrationPanel />
     </div>
   )
 }

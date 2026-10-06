@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { toast } from 'sonner'
 import { translations } from '@/lib/translations'
 import SiteTextsTabs from '@/components/SiteTextsTabs'
+import SeoSettings from '@/components/SeoSettings'
 import { img } from '@/lib/constants'
 
 export default function AdminSettings() {
@@ -350,6 +351,9 @@ export default function AdminSettings() {
           </>
         )}
       </div>
+
+      {/* SEO Settings */}
+      <SeoSettings upsertSetting={upsertSetting} />
 
       {/* Promo Codes */}
       <div className="glass-card rounded-xl p-6">

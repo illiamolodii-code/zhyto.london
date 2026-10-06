@@ -170,7 +170,7 @@ export default function ProductsSection({
             const label = (lang === 'uk' && categoryNames[key]) || (lang === 'pl' && categoryNamesPl[key]) || (t.products.categories as any)[key] || key
             const desc = (lang === 'uk' && categoryDescUk[key]) || (lang === 'pl' && categoryDescPl[key]) || categoryDescriptions[key] || ''
             return (
-              <div key={key} className={catIndex > 0 ? 'mt-16' : ''}>
+              <div key={key} id={`cat-${key}`} className={catIndex > 0 ? 'mt-16' : ''}>
                 <div className="animate-on-view mb-8">
                   <h3 className="text-5xl md:text-4xl lg:text-5xl text-foreground mb-2">
                     <span className="font-script">{label}</span>
