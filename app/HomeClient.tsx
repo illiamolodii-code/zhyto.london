@@ -15,7 +15,6 @@ import Footer from '@/components/sections/Footer'
 import ScrollButtons from '@/components/sections/ScrollButtons'
 import SignInModal from '@/components/sections/SignInModal'
 import SplashScreen from '@/components/SplashScreen'
-import { PaymentNoticeModal } from '@/components/payment-notice-modal'
 
 export default function HomeClient({
   preloadedProducts,
@@ -38,7 +37,6 @@ export default function HomeClient({
   const [cartOpen, setCartOpen] = useState(false)
   const [checkoutOpen, setCheckoutOpen] = useState(false)
   const [signInModalOpen, setSignInModalOpen] = useState(false)
-  const [noticeOpen, setNoticeOpen] = useState(false)
   const [activeProducts, setActiveProducts] = useState<any[]>([])
 
   const [headerMode, setHeaderMode] = useState<'visible' | 'hidden'>('visible')
@@ -107,11 +105,7 @@ export default function HomeClient({
     return () => clearTimeout(timeout)
   }, [])
 
-useEffect(() => {
-    if (ready) setNoticeOpen(true)
-  }, [ready])
-
-  return (
+return (
     <>
       {!ready && (
 <SplashScreen
@@ -154,7 +148,6 @@ useEffect(() => {
         products={activeProducts}
       />
       <SignInModal open={signInModalOpen} onOpenChange={setSignInModalOpen} />
-      <PaymentNoticeModal open={noticeOpen} onOpenChange={setNoticeOpen} />
 
       <ScrollButtons
         showScrollTop={showScrollTop}
