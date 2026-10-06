@@ -43,6 +43,13 @@ const LangContext = createContext<LangContextType>({
 
 const CATEGORY_SLUGS = ['varenyky', 'syrnyky', 'pelmeni']
 
+function detectLangFromPath(path: string): Lang {
+  const seg = path.split('/').filter(Boolean)[0]
+  if (seg === 'uk') return 'uk'
+  if (seg === 'pl') return 'pl'
+  return 'en'
+}
+
 function buildLocalePath(pathname: string, locale: Lang): string {
   const segments = pathname.split('/').filter(Boolean)
   const isLocalized = segments[0] === 'uk' || segments[0] === 'pl'
@@ -72,6 +79,12 @@ export function LanguageProvider({
       try { localStorage.setItem(LS_KEY, initialLang) } catch {}
     }
   }, [initialLang])
+
+  useEffect(() => {
+    const detected = detectLangFromPath(pathname || '')
+    setLangState(detected)
+    try { localStorage.setItem(LS_KEY, detected) } catch {}
+  }, [pathname, initialLang])
 
   useEffect(() => {
     fetch('/api/public/texts')
