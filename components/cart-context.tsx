@@ -73,6 +73,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const removeFromCart = useCallback((id: number) => {
     setCart(prev => {
+      if (!prev[id]) return prev
       const next = { ...prev }
       if (next[id].qty > 1) next[id] = { ...next[id], qty: next[id].qty - 1 }
       else delete next[id]

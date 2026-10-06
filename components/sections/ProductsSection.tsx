@@ -309,7 +309,8 @@ export default function ProductsSection({
                   <button
                     type="button"
                     onClick={() => removeFromCart(selectedProduct.id)}
-                    className="w-10 h-10 flex items-center justify-center border border-gray-300 hover:border-primary hover:text-primary transition-all text-gray-700 cursor-pointer"
+                    disabled={(cart[selectedProduct.id]?.qty || 0) < 1}
+                    className="w-10 h-10 flex items-center justify-center border border-gray-300 hover:border-primary hover:text-primary transition-all text-gray-700 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
