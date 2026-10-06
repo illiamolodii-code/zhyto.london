@@ -8,7 +8,7 @@ import { LanguageProvider } from '@/components/language-context'
 import { CookieConsent } from '@/components/cookie-consent'
 import { Toaster } from '@/components/ui/sonner'
 import { NoiseOverlay } from '@/components/noise-overlay'
-import { BASE_PATH } from '@/lib/constants'
+import { BASE_PATH, SITE_URL } from '@/lib/constants'
 import './globals.css'
 
 const playfair = Playfair_Display({ 
@@ -47,14 +47,61 @@ const epoch = localFont({
   display: 'swap',
 })
 
+const ogImage = `${SITE_URL}/images/Gemini_Generated_Image_hmwm3ehmwm3ehmwm.png`
+
 export const metadata: Metadata = {
-  title: 'zhyto.london | Authentic Ukrainian Varenyky & Syrnyky',
-  description: 'Handcrafted Ukrainian varenyky and syrnyky delivered to your door in London. Marketplace for authentic homemade cuisine.',
-  keywords: ['varenyky', 'syrnyky', 'ukrainian food', 'london', 'dumplings', 'marketplace'],
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'zhyto.london | Authentic Ukrainian Varenyky & Syrnyky',
+    template: '%s | zhyto.london',
+  },
+  description: 'Handcrafted Ukrainian varenyky and syrnyky delivered to your door in London. Order authentic homemade dumplings online \u2014 same-day delivery across Zones 1\u20133, next-day for all London.',
+  keywords: [
+    'varenyky', 'vareniki', 'ukrainian dumplings', 'syrnyky',
+    'ukrainian food london', 'ukrainian restaurant london', 'home made dumplings',
+    'pelmeni', 'varenyky delivery london', 'ukrainian cuisine', 'czech dumplings',
+    'varenyky online', 'syrnyky london', 'deliver ukrainian food',
+  ],
+  applicationName: 'zhyto.london',
+  category: 'food',
+  authors: [{ name: 'zhyto.london' }],
+  creator: 'zhyto.london',
+  publisher: 'zhyto.london',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
+  },
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    url: SITE_URL,
+    siteName: 'zhyto.london',
+    title: 'zhyto.london | Authentic Ukrainian Varenyky & Syrnyky',
+    description: 'Handcrafted Ukrainian varenyky and syrnyky delivered to your door in London. Order authentic homemade dumplings online \u2014 same-day delivery across Zones 1\u20133.',
+    locale: 'en_GB',
+    images: [{ url: ogImage, width: 1024, height: 1024, alt: 'zhyto.london \u2014 Authentic Ukrainian Varenyky & Syrnyky' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'zhyto.london | Authentic Ukrainian Varenyky & Syrnyky',
+    description: 'Handcrafted Ukrainian varenyky and syrnyky delivered in London. Order authentic homemade dumplings online.',
+    images: [ogImage],
+  },
   icons: {
     icon: `${BASE_PATH}/favicon.svg`,
     shortcut: `${BASE_PATH}/favicon.svg`,
-    apple: `${BASE_PATH}/images/Gemini_Generated_Image_hmwm3ehmwm3ehmwm.png`,
+    apple: `${SITE_URL}/apple-icon.png`,
+  },
+  appleWebApp: {
+    capable: true,
+    title: 'zhyto.london',
+    statusBarStyle: 'default',
+  },
+  formatDetection: {
+    telephone: false,
   },
 }
 

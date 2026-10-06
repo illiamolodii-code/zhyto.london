@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/utils/supabase'
+import { SITE_URL } from '@/lib/constants'
 import HomeClient from './HomeClient'
 
 export default async function Home() {
@@ -47,14 +48,61 @@ export default async function Home() {
   }
 
   return (
-    <HomeClient
-      preloadedProducts={preloadedProducts}
-      preloadedCategoryOrder={preloadedCategoryOrder}
-      preloadedCategoryNames={preloadedCategoryNames}
-      preloadedCategoryDescriptions={preloadedCategoryDescriptions}
-      preloadedCategoryNamesPl={preloadedCategoryNamesPl}
-      preloadedCategoryDescPl={preloadedCategoryDescPl}
-      preloadedCategoryDescUk={preloadedCategoryDescUk}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            {
+              "@context": "https://schema.org",
+              "@type": "FoodEstablishment",
+              "@id": `${SITE_URL}/#restaurant`,
+              name: "zhyto.london",
+              url: SITE_URL,
+              image: `${SITE_URL}/images/Gemini_Generated_Image_hmwm3ehmwm3ehmwm.png`,
+              servesCuisine: ["Ukrainian", "Dumplings"],
+              priceRange: "£",
+              areaServed: { "@type": "City", name: "London" },
+              description: "Handcrafted Ukrainian varenyky and syrnyky delivered to your door in London.",
+              sameAs: [
+                "https://www.instagram.com/zhyto.london/",
+                "https://t.me/dunaimore",
+              ],
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "ItemList",
+              name: "zhyto.london menu",
+              itemListElement: (preloadedProducts || []).map((p, i) => ({
+                "@type": "ListItem",
+                position: i + 1,
+                item: {
+                  "@type": "Product",
+                  name: p.name,
+                  image:
+                    (p.image && (p.image.startsWith('http') ? p.image : `${SITE_URL}${p.image}`)) ||
+                    `${SITE_URL}/images/hero-varenyky.jpg`,
+                  offers: {
+                    "@type": "Offer",
+                    price: String(p.price),
+                    priceCurrency: "GBP",
+                    availability: p.stock === 0 ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+                  },
+                },
+              })),
+            },
+          ]),
+        }}
+      />
+      <HomeClient
+        preloadedProducts={preloadedProducts}
+        preloadedCategoryOrder={preloadedCategoryOrder}
+        preloadedCategoryNames={preloadedCategoryNames}
+        preloadedCategoryDescriptions={preloadedCategoryDescriptions}
+        preloadedCategoryNamesPl={preloadedCategoryNamesPl}
+        preloadedCategoryDescPl={preloadedCategoryDescPl}
+        preloadedCategoryDescUk={preloadedCategoryDescUk}
+      />
+    </>
   )
 }
