@@ -64,10 +64,19 @@ export default function AdminProducts() {
   const bgFileInputRef = useRef<HTMLInputElement>(null)
 
   const fetchProducts = () => {
-    supabase.from('products').select('*').order('sort_order').then(({ data, error }) => {
-      if (!error && data) setProducts(data as Product[])
-      setLoading(false)
-    })
+    supabase.from('products')
+      .select('id, name, name_uk, name_en, name_pl, description, description_uk, description_en, description_pl, price, unit, badge, category, available, stock, sort_order, recipe_uk, recipe_en, recipe_pl, ingredients_uk, ingredients_en, ingredients_pl')
+      .order('sort_order')
+      .then(({ data, error }) => {
+        if (!error && data) setProducts(data as Product[])
+        setLoading(false)
+      })
+  }
+
+  const openEdit = async (product: Product) => {
+    setEditing(product)
+    const { data } = await supabase.from('products').select('id, image, background_image').eq('id', product.id).single()
+    if (data) setEditing(f => ({ ...(f as Product), image: data.image, background_image: data.background_image }))
   }
 
   const fetchCategories = () => {
@@ -566,7 +575,7 @@ export default function AdminProducts() {
                           </span>
                         )}
                         <div className="relative w-14 h-14 sm:w-20 sm:h-20 overflow-hidden shrink-0">
-                          <img src={img(product.image)} alt={product.name} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).src = '/images/syrnyky-new.webp' }} />
+                          <img src={product.image ? img(product.image) : '/images/syrnyky-new.webp'} alt={product.name} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).src = '/images/syrnyky-new.webp' }} />
                         </div>
                       </div>
                       <div className="flex-1 min-w-0 ml-2">
@@ -599,7 +608,7 @@ export default function AdminProducts() {
                         {product.available ? 'DISABLE' : 'ENABLE'}
                       </button>
                       <button
-                        onClick={() => setEditing({ ...product })}
+                        onClick={() => openEdit(product)}
                         className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-border/50 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground/50 transition-colors cursor-pointer"
                         title="Edit"
                       >
