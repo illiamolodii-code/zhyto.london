@@ -10,7 +10,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { useLanguage } from '@/components/language-context'
 import { toast } from 'sonner'
-import { Instagram, Check, Copy } from 'lucide-react'
+import { Instagram, Check, Copy, Send } from 'lucide-react'
 
 interface InstagramOrderModalProps {
   open: boolean
@@ -19,6 +19,7 @@ interface InstagramOrderModalProps {
 }
 
 const INSTAGRAM_LINK = 'https://ig.me/m/zhyto.london'
+const TELEGRAM_LINK = 'https://t.me/dunaimore'
 
 export function InstagramOrderModal({ open, onOpenChange, message }: InstagramOrderModalProps) {
   const { t } = useLanguage()
@@ -71,6 +72,16 @@ export function InstagramOrderModal({ open, onOpenChange, message }: InstagramOr
             {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
             {copied ? t.checkout.orderCopied : t.checkout.copyOrder}
           </Button>
+
+          <a
+            href={`${TELEGRAM_LINK}?text=${encodeURIComponent(message)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-center gap-3 py-4 text-[16px] tracking-[0.2em] rounded-none text-white bg-[#229ED9] hover:bg-[#1d8fc4] gold-glow"
+          >
+            <Send className="w-5 h-5" />
+            {t.checkout.openTelegram}
+          </a>
 
           <a
             href={INSTAGRAM_LINK}

@@ -202,8 +202,9 @@ export const translations = {
       copyOrder: 'COPY ORDER TEXT',
       orderCopied: 'Order text copied!',
       openInstagram: 'OPEN INSTAGRAM',
+      openTelegram: 'OPEN TELEGRAM',
       orderMessageTitle: 'ORDER MESSAGE',
-      instagramDone: 'Send this message to our Instagram to confirm your order.',
+      instagramDone: 'Send this message to our Instagram or Telegram to confirm your order — the order text is already filled in.',
     },
     privacy: {
       title: 'Privacy Policy',
@@ -470,8 +471,9 @@ export const translations = {
       copyOrder: 'СКОПІЮВАТИ ТЕКСТ',
       orderCopied: 'Текст замовлення скопійовано!',
       openInstagram: 'ВІДКРИТИ INSTAGRAM',
+      openTelegram: 'ВІДКРИТИ TELEGRAM',
       orderMessageTitle: 'ТЕКСТ ЗАМОВЛЕННЯ',
-      instagramDone: 'Надішліть це повідомлення в наш Instagram, щоб підтвердити замовлення.',
+      instagramDone: 'Надішліть це повідомлення в наш Instagram або Telegram, щоб підтвердити замовлення — текст уже заповнено.',
     },
     privacy: {
       title: 'Політика конфіденційності',
@@ -738,8 +740,9 @@ export const translations = {
       copyOrder: 'KOPIUJ TEKST',
       orderCopied: 'Tekst zamówienia skopiowany!',
       openInstagram: 'OTWÓRZ INSTAGRAM',
+      openTelegram: 'OTWÓRZ TELEGRAM',
       orderMessageTitle: 'TEKST ZAMÓWIENIA',
-      instagramDone: 'Wyślij tę wiadomość na nasz Instagram, aby potwierdzić zamówienie.',
+      instagramDone: 'Wyślij tę wiadomość na nasz Instagram lub Telegram, aby potwierdzić zamówienie — tekst jest już wypełniony.',
     },
     privacy: {
       title: 'Polityka prywatności',
