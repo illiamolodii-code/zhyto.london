@@ -73,23 +73,27 @@ export default async function Home() {
               "@context": "https://schema.org",
               "@type": "ItemList",
               name: "zhyto.london menu",
-              itemListElement: (preloadedProducts || []).map((p, i) => ({
-                "@type": "ListItem",
-                position: i + 1,
-                item: {
-                  "@type": "Product",
-                  name: p.name,
-                  image:
-                    (p.image && (p.image.startsWith('http') ? p.image : `${SITE_URL}${p.image}`)) ||
-                    `${SITE_URL}/images/hero-varenyky.jpg`,
-                  offers: {
-                    "@type": "Offer",
-                    price: String(p.price),
-                    priceCurrency: "GBP",
-                    availability: p.stock === 0 ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+              itemListElement: (preloadedProducts || []).map((p, i) => {
+                const isDataImage = typeof p.image === 'string' && p.image.startsWith('data:')
+                return {
+                  "@type": "ListItem",
+                  position: i + 1,
+                  item: {
+                    "@type": "Product",
+                    name: p.name,
+                    image: isDataImage
+                      ? `${SITE_URL}/images/hero-varenyky.jpg`
+                      : (p.image && (p.image.startsWith('http') ? p.image : `${SITE_URL}${p.image}`)) ||
+                        `${SITE_URL}/images/hero-varenyky.jpg`,
+                    offers: {
+                      "@type": "Offer",
+                      price: String(p.price),
+                      priceCurrency: "GBP",
+                      availability: p.stock === 0 ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+                    },
                   },
-                },
-              })),
+                }
+              }),
             },
           ]),
         }}
