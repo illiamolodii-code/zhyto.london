@@ -93,6 +93,11 @@ export const translations = {
       instagram: 'INSTAGRAM',
       whatsapp: 'WHATSAPP',
     },
+    notice: {
+      title: 'Card payments temporarily unavailable',
+      desc: 'You can continue browsing and add items to your cart. At checkout, your order will be sent to our Instagram for confirmation.',
+      gotIt: 'GOT IT',
+    },
     footer: {
       rights: '\u00a9 2026 zhyto.london. ALL RIGHTS RESERVED.',
       designedBy: 'Designed & Built by',
@@ -190,6 +195,13 @@ export const translations = {
       postcodePlaceholder: 'e.g. SW1A 1AA',
       lookingUp: 'Looking up...',
       postcodeInvalid: 'Invalid postcode',
+      orderViaInstagram: 'ORDER VIA INSTAGRAM',
+      orderViaInstagramDesc: 'Card payment is temporarily unavailable. Send your order to our Instagram and we will confirm it there.',
+      copyOrder: 'COPY ORDER TEXT',
+      orderCopied: 'Order text copied!',
+      openInstagram: 'OPEN INSTAGRAM',
+      orderMessageTitle: 'ORDER MESSAGE',
+      instagramDone: 'Send this message to our Instagram to confirm your order.',
     },
     privacy: {
       title: 'Privacy Policy',
@@ -347,6 +359,11 @@ export const translations = {
       instagram: 'INSTAGRAM',
       whatsapp: 'WHATSAPP',
     },
+    notice: {
+      title: 'Оплата карткою тимчасово недоступна',
+      desc: 'Ви можете продовжити перегляд сайту та додавати товари в кошик. При оформленні замовлення воно буде надіслане в наш Instagram для підтвердження.',
+      gotIt: 'ЗРОЗУМІЛО',
+    },
     footer: {
       rights: '\u00a9 2026 zhyto.london. ВСІ ПРАВА ЗАХИЩЕНО.',
       designedBy: 'Дизайн і розробка',
@@ -444,6 +461,13 @@ export const translations = {
       postcodePlaceholder: 'напр. SW1A 1AA',
       lookingUp: 'Пошук...',
       postcodeInvalid: 'Невірний індекс',
+      orderViaInstagram: 'ЗАМОВИТИ ЧЕРЕЗ INSTAGRAM',
+      orderViaInstagramDesc: 'Оплата карткою тимчасово недоступна. Надішліть замовлення в наш Instagram, і ми підтвердимо його там.',
+      copyOrder: 'СКОПІЮВАТИ ТЕКСТ',
+      orderCopied: 'Текст замовлення скопійовано!',
+      openInstagram: 'ВІДКРИТИ INSTAGRAM',
+      orderMessageTitle: 'ТЕКСТ ЗАМОВЛЕННЯ',
+      instagramDone: 'Надішліть це повідомлення в наш Instagram, щоб підтвердити замовлення.',
     },
     privacy: {
       title: 'Політика конфіденційності',
@@ -601,6 +625,11 @@ export const translations = {
       instagram: 'INSTAGRAM',
       whatsapp: 'WHATSAPP',
     },
+    notice: {
+      title: 'Płatność kartą chwilowo niedostępna',
+      desc: 'Możesz przeglądać stronę i dodawać produkty do koszyka. Przy składaniu zamówienia zostanie ono wysłane na nasz Instagram w celu potwierdzenia.',
+      gotIt: 'ROZUMIEM',
+    },
     footer: {
       rights: '\u00a9 2026 zhyto.london. WSZELKIE PRAWA ZASTRZEŻONE.',
       designedBy: 'Projekt i wykonanie',
@@ -698,6 +727,13 @@ export const translations = {
       postcodePlaceholder: 'np. SW1A 1AA',
       lookingUp: 'Szukanie...',
       postcodeInvalid: 'Nieprawidłowy kod pocztowy',
+      orderViaInstagram: 'ZAMÓW PRZEZ INSTAGRAM',
+      orderViaInstagramDesc: 'Płatność kartą jest chwilowo niedostępna. Wyślij zamówienie na nasz Instagram, a my je tam potwierdzimy.',
+      copyOrder: 'KOPIUJ TEKST',
+      orderCopied: 'Tekst zamówienia skopiowany!',
+      openInstagram: 'OTWÓRZ INSTAGRAM',
+      orderMessageTitle: 'TEKST ZAMÓWIENIA',
+      instagramDone: 'Wyślij tę wiadomość na nasz Instagram, aby potwierdzić zamówienie.',
     },
     privacy: {
       title: 'Polityka prywatności',

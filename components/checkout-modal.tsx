@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import {
   Dialog,
   DialogContent,
@@ -13,17 +12,11 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Elements } from '@stripe/react-stripe-js'
 import { useCart } from '@/components/cart-context'
 import { useAuth } from '@/components/auth-context'
-import { supabase } from '@/lib/supabase'
-import { getStripe } from '@/lib/stripe'
-import { CardPaymentModal } from '@/components/card-payment-modal'
-import { WalletPaymentModal } from '@/components/wallet-payment-modal'
-import { PayPalPaymentModal } from '@/components/paypal-payment-modal'
-import { PaymentMethodModal, PaymentMethodType } from '@/components/payment-method-modal'
+import { InstagramOrderModal } from '@/components/instagram-order-modal'
 import { toast } from 'sonner'
-import { ArrowLeft, Package, Truck, CreditCard, Smartphone, Chrome, Loader, Percent, Wallet } from 'lucide-react'
+import { Package, Truck, Percent, Chrome, Instagram } from 'lucide-react'
 import { useDeliverySettings, calcDelivery } from '@/lib/use-delivery'
 import { useLanguage } from '@/components/language-context'
 
@@ -39,31 +32,13 @@ interface CheckoutModalProps {
   products: Product[]
 }
 
-const hasStripe = typeof process !== 'undefined' &&
-  !!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY &&
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY.startsWith('pk_')
-
-const methodIcons: Record<PaymentMethodType, typeof CreditCard> = {
-  card:     CreditCard,
-  applepay: Smartphone,
-  googlepay:Smartphone,
-  paypal:   Wallet,
-}
-
 export function CheckoutModal({ open, onOpenChange, products }: CheckoutModalProps) {
-  const router = useRouter()
-  const { cart, clearCart } = useCart()
+  const { cart } = useCart()
   const { user, loading: authLoading, signInWithGoogle } = useAuth()
   const { settings } = useDeliverySettings()
   const { t } = useLanguage()
-  const [submitting, setSubmitting] = useState(false)
   const [showPayment, setShowPayment] = useState(false)
-  const [cardModalOpen, setCardModalOpen] = useState(false)
-  const [walletModalOpen, setWalletModalOpen] = useState(false)
-  const [paypalModalOpen, setPaypalModalOpen] = useState(false)
-  const [methodModalOpen, setMethodModalOpen] = useState(false)
-  const [selectedMethod, setSelectedMethod] = useState<PaymentMethodType | null>(null)
-  const [clientSecret, setClientSecret] = useState<string | null>(null)
+  const [instagramModalOpen, setInstagramModalOpen] = useState(false)
   const [deliveryAddress, setDeliveryAddress] = useState(() => {
     if (typeof window !== 'undefined') return localStorage.getItem('zhyto-address') || ''
     return ''
@@ -155,141 +130,25 @@ export function CheckoutModal({ open, onOpenChange, products }: CheckoutModalPro
   }
 
   useEffect(() => {
-    if (user && !showPayment && !authLoading && open && cartItems.length > 0) {
-      setShowPayment(true)
-    }
-  }, [user, authLoading, open])
-
-  useEffect(() => {
     if (!open) {
       setShowPayment(false)
-      setSelectedMethod(null)
-      setClientSecret(null)
+      setInstagramModalOpen(false)
     }
   }, [open])
 
-  const handleMethodSelect = async (method: PaymentMethodType) => {
-    setSelectedMethod(method)
-
-    if (method === 'paypal') {
-      setPaypalModalOpen(true)
-      return
-    }
-
-    if (method === 'applepay' || method === 'googlepay') {
-      if (!hasStripe) return
-      setSubmitting(true)
-      try {
-        const data = await createOrderViaApi(false)
-        if (data.clientSecret) {
-          setClientSecret(data.clientSecret)
-          setWalletModalOpen(true)
-        } else {
-          toast.error(t.checkout.paymentUnavailable)
-          setSelectedMethod(null)
-        }
-      } catch (e: any) {
-        console.error('Apple Pay error:', e?.message || e)
-        toast.error(e?.message || 'Payment service unavailable. Please try again.')
-        setSelectedMethod(null)
-      } finally {
-        setSubmitting(false)
-      }
-      return
-    }
-
-    if (!hasStripe) return
-
-    setSubmitting(true)
-    try {
-      const data = await createOrderViaApi(false)
-      if (data.clientSecret) {
-        setClientSecret(data.clientSecret)
-        setCardModalOpen(true)
-      } else {
-        toast.error(t.checkout.paymentUnavailable)
-        setSelectedMethod(null)
-      }
-    } catch (e: any) {
-      console.error('Card payment error:', e?.message || e)
-      toast.error(e?.message || 'Payment service unavailable. Please try again.')
-      setSelectedMethod(null)
-    } finally {
-      setSubmitting(false)
-    }
+  const handleContinueToPayment = () => {
+    setShowPayment(true)
+    setInstagramModalOpen(true)
   }
 
-  const createOrderViaApi = async (skipPayment = false) => {
-    if (!user) throw new Error('User not authenticated')
-    const { data: { session } } = await supabase.auth.getSession()
-    const accessToken = session?.access_token || ''
-    const res = await fetch('/api/orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        items: cartItems.map(i => ({ product_id: i.id, name: i.name, price: i.price, quantity: i.qty })),
-        customer_name: user.user_metadata?.full_name || '',
-        customer_email: user.email || '',
-        delivery_address: deliveryAddress,
-        skip_payment: skipPayment,
-      }),
-    })
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({ error: 'Unknown error' }))
-      throw new Error(err.error || 'Order creation failed')
-    }
-    return res.json()
-  }
-
-  const handleMockPayment = async () => {
-    setSubmitting(true)
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    try {
-      await createOrderViaApi(true)
-    } catch (e: any) {
-      toast.error('Order was not saved. Please contact support.')
-      setSubmitting(false)
-      return
-    }
-    toast.success(t.checkout.orderConfirmed)
-    clearCart()
-    onOpenChange(false)
-    setShowPayment(false)
-    setSelectedMethod(null)
-    setClientSecret(null)
-    setSubmitting(false)
-    router.push('/account')
-  }
-
-  const handlePaymentSuccess = async () => {
-    toast.success(t.checkout.orderConfirmed)
-    clearCart()
-    onOpenChange(false)
-    setShowPayment(false)
-    setSelectedMethod(null)
-    setClientSecret(null)
-    router.push('/account')
-  }
-
-  const handlePostRedirectSuccess = () => {
-    toast.success(t.checkout.orderConfirmed)
-    clearCart()
-    onOpenChange(false)
-    setShowPayment(false)
-    setSelectedMethod(null)
-    setClientSecret(null)
-    router.push('/account')
-  }
-
-  const handleBackToMethods = () => {
-    setSelectedMethod(null)
-    setClientSecret(null)
-  }
-
-  const stripePromise = hasStripe ? getStripe() : null
+  const instagramMessage = [
+    'ZHYTO order',
+    ...cartItems.map(i => `- ${i.qty}x ${i.name} = £${(i.price * i.qty).toFixed(2)}`),
+    `Delivery: ${delivery === null ? 'N/A' : delivery === 0 ? 'FREE' : `£${delivery.toFixed(2)}`}`,
+    `Total: £${total.toFixed(2)}`,
+    deliveryAddress.trim() ? `Address: ${deliveryAddress.trim()}` : null,
+    postcodeInfo ? `Postcode: ${postcodeInput.toUpperCase()} (${postcodeInfo.district}${postcodeInfo.region ? `, ${postcodeInfo.region}` : ''})` : null,
+  ].filter(Boolean).join('\n')
 
   const renderPaymentStep = () => (
     <div className="space-y-5">
@@ -426,34 +285,22 @@ export function CheckoutModal({ open, onOpenChange, products }: CheckoutModalPro
         </div>
       </div>
 
-      {/* Selected method info or Select Method button */}
-      {selectedMethod ? (
-        <div className="text-center py-4 text-muted-foreground">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            {(() => {
-              const Icon = methodIcons[selectedMethod]
-              return <Icon className="w-5 h-5 text-primary" />
-            })()}
-            <span className="text-[16px] text-foreground">
-              {t.checkout[selectedMethod === 'card' ? 'payByCard' : selectedMethod === 'applepay' ? 'applePay' : selectedMethod === 'googlepay' ? 'googlePay' : 'payPal']}
-            </span>
-          </div>
-          {selectedMethod !== 'paypal' && !clientSecret && (
-            <p className="text-[14px]">Setting up payment...</p>
-          )}
-          <button onClick={handleBackToMethods} className="text-primary hover:underline mt-3 text-[16px] tracking-[0.15em] cursor-pointer">
-            {t.checkout.changeMethod}
-          </button>
-        </div>
-      ) : (
+      {/* Order via Instagram */}
+      <div className="glass-card rounded-lg p-4 space-y-3">
+        <p className="text-[15px] text-muted-foreground leading-relaxed">
+          {t.checkout.orderViaInstagramDesc}
+        </p>
         <button
-          onClick={() => setMethodModalOpen(true)}
-          disabled={submitting || !deliveryAddress.trim()}
+          onClick={handleContinueToPayment}
+          disabled={!deliveryAddress.trim()}
           className="w-full py-4 text-[16px] tracking-[0.2em] rounded-none bg-primary text-primary-foreground hover:bg-primary/90 gold-glow disabled:opacity-50 cursor-pointer"
         >
-          {t.checkout.selectMethod}
+          <span className="inline-flex items-center justify-center gap-3">
+            <Instagram className="w-5 h-5" />
+            {t.checkout.orderViaInstagram}
+          </span>
         </button>
-      )}
+      </div>
 
       {delivery !== null && delivery > 0 && (
         <div className="flex items-center gap-3 text-[16px] text-foreground/60 bg-border/10 rounded-lg px-4 py-3">
@@ -463,25 +310,6 @@ export function CheckoutModal({ open, onOpenChange, products }: CheckoutModalPro
               ? t.checkout.deliveryFee.replace('{fee}', String(settings.fee)).replace('{amount}', (settings.free_threshold - subtotal).toFixed(0))
               : t.checkout.minimumOrder.replace('{min}', String(settings.min_order)).replace('{amount}', (settings.min_order - subtotal).toFixed(0))}
           </span>
-        </div>
-      )}
-
-      {/* Fallback mock payment when stripe not available */}
-      {!hasStripe && selectedMethod && (
-        <div className="space-y-4">
-          <div className="bg-border/10 border border-border/20 rounded-lg p-4 text-center">
-            <p className="font-serif text-3xl text-primary mb-1">£{total}</p>
-            <p className="text-[18px] text-foreground/60 tracking-[0.1em]">{t.checkout.totalToPay}</p>
-          </div>
-          <Button
-            type="button"
-            onClick={handleMockPayment}
-            disabled={submitting || !deliveryAddress.trim()}
-            size="lg"
-            className="w-full text-[16px] tracking-[0.2em] rounded-none bg-primary text-primary-foreground hover:bg-primary/90 gold-glow py-6 disabled:opacity-50"
-          >
-            {submitting ? t.checkout.processing : t.checkout.confirmPayment.replace('{amount}', total.toFixed(2))}
-          </Button>
         </div>
       )}
     </div>
@@ -588,17 +416,16 @@ export function CheckoutModal({ open, onOpenChange, products }: CheckoutModalPro
                       variant="outline"
                       size="lg"
                       onClick={() => onOpenChange(false)}
-                      disabled={submitting}
                       className="flex-1 text-[16px] tracking-[0.2em] rounded-none border-border/50 hover:bg-transparent whitespace-normal"
                     >
                       {t.checkout.cancel}
                     </Button>
                     <Button
                       type="button"
-                      disabled={submitting || cartItems.length === 0 || !user || subtotal < settings.min_order}
+                      disabled={cartItems.length === 0 || !user || subtotal < settings.min_order}
                       className="flex-1 text-[16px] tracking-[0.2em] rounded-none bg-primary text-primary-foreground hover:bg-primary/90 gold-glow py-6 disabled:opacity-50 whitespace-normal text-balance"
                     >
-                      {!user ? t.checkout.signInToContinue : submitting ? t.checkout.pleaseWait : subtotal < settings.min_order ? t.checkout.minOrder.replace('{min}', String(settings.min_order)).replace('{amount}', (settings.min_order - subtotal).toFixed(0)) : t.checkout.continueToPay}
+                      {!user ? t.checkout.signInToContinue : subtotal < settings.min_order ? t.checkout.minOrder.replace('{min}', String(settings.min_order)).replace('{amount}', (settings.min_order - subtotal).toFixed(0)) : t.checkout.continueToPay}
                     </Button>
                   </div>
                 </>
@@ -611,57 +438,10 @@ export function CheckoutModal({ open, onOpenChange, products }: CheckoutModalPro
         </ScrollArea>
       </DialogContent>
 
-      <PaymentMethodModal
-        open={methodModalOpen}
-        onOpenChange={setMethodModalOpen}
-        onSelect={handleMethodSelect}
-        total={total}
-      />
-
-      <CardPaymentModal
-        open={cardModalOpen}
-        onOpenChange={(open) => {
-          setCardModalOpen(open)
-          if (!open) {
-            setSelectedMethod(null)
-            setClientSecret(null)
-          }
-        }}
-        clientSecret={clientSecret || ''}
-        amount={total}
-        onSuccess={handlePaymentSuccess}
-        userName={user?.user_metadata?.full_name || ''}
-        userEmail={user?.email || ''}
-      />
-
-      <WalletPaymentModal
-        open={walletModalOpen}
-        onOpenChange={(open) => {
-          setWalletModalOpen(open)
-          if (!open) {
-            setSelectedMethod(null)
-            setClientSecret(null)
-          }
-        }}
-        clientSecret={clientSecret || ''}
-        amount={total}
-        onSuccess={handlePaymentSuccess}
-      />
-
-      <PayPalPaymentModal
-        open={paypalModalOpen}
-        onOpenChange={(open) => {
-          setPaypalModalOpen(open)
-          if (!open) {
-            setSelectedMethod(null)
-          }
-        }}
-        amount={total}
-        onSuccess={handlePostRedirectSuccess}
-        onBeforePay={async () => {
-          const result = await createOrderViaApi(true)
-          return result.order?.id
-        }}
+      <InstagramOrderModal
+        open={instagramModalOpen}
+        onOpenChange={setInstagramModalOpen}
+        message={instagramMessage}
       />
     </Dialog>
   )
