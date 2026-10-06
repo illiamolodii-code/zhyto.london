@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { ArrowRight } from 'lucide-react'
-import Image from 'next/image'
 import { img as imgPath } from '@/lib/constants'
 const img = imgPath
 import { ImageCarousel } from '@/components/image-carousel'
@@ -86,18 +85,7 @@ export default function AboutSection() {
                 ))}
               </div>
             )}
-            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 lg:-bottom-12 w-56 h-56 lg:w-72 lg:h-72 overflow-hidden">
-              <Image
-                src={img("/images/about-card.webp")}
-                alt=""
-                fill
-                className="object-contain"
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-3xl lg:text-4xl font-script leading-none text-black">{names[aboutImageIndex]}</span>
-              </div>
             </div>
-          </div>
         </div>
       </div>
     </section>
