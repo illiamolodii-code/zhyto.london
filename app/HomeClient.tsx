@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from 'react'
+import Lenis from 'lenis'
 import { CartDrawer } from '@/components/cart-drawer'
 import { CheckoutModal } from '@/components/checkout-modal'
 import SectionWave from '@/components/SectionWave'
@@ -61,6 +62,20 @@ export default function HomeClient({
     if (el) productsTopRef.current = el.offsetTop
     const aboutEl = document.getElementById('about')
     if (aboutEl) aboutTopRef.current = aboutEl.offsetTop
+  }, [])
+
+  useEffect(() => {
+    const lenis = new Lenis({ lerp: 0.08, wheelMultiplier: 1 })
+    let rafId = 0
+    const raf = (time: number) => {
+      lenis.raf(time)
+      rafId = requestAnimationFrame(raf)
+    }
+    rafId = requestAnimationFrame(raf)
+    return () => {
+      cancelAnimationFrame(rafId)
+      lenis.destroy()
+    }
   }, [])
 
   useEffect(() => {
