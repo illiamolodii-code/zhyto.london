@@ -17,6 +17,8 @@ import ScrollButtons from '@/components/sections/ScrollButtons'
 import SignInModal from '@/components/sections/SignInModal'
 import SplashScreen from '@/components/SplashScreen'
 
+let splashSeen = false
+
 export default function HomeClient({
   lang,
   initialCategory,
@@ -38,14 +40,17 @@ export default function HomeClient({
   preloadedCategoryDescPl: Record<string, string>
   preloadedCategoryDescUk: Record<string, string>
 }) {
-  const [ready, setReady] = useState(false)
+  const [ready, setReady] = useState(splashSeen)
   const [cartOpen, setCartOpen] = useState(false)
   const [checkoutOpen, setCheckoutOpen] = useState(false)
   const [signInModalOpen, setSignInModalOpen] = useState(false)
   const [activeProducts, setActiveProducts] = useState<any[]>([])
 
   useEffect(() => {
-    const id = setTimeout(() => setReady(true), 3500)
+    const id = setTimeout(() => {
+      splashSeen = true
+      setReady(true)
+    }, 3500)
     return () => clearTimeout(id)
   }, [])
 
@@ -149,7 +154,10 @@ return (
     <>
       {!ready && (
 <SplashScreen
-          onReady={() => setReady(true)}
+          onReady={() => {
+            splashSeen = true
+            setReady(true)
+          }}
         />
       )}
       <main className="min-h-screen bg-background">
