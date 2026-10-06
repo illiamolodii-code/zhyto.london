@@ -92,6 +92,7 @@ export const translations = {
       orderNow: 'ORDER NOW',
       instagram: 'INSTAGRAM',
       whatsapp: 'WHATSAPP',
+      telegram: 'TELEGRAM',
     },
     notice: {
       title: 'Card payments temporarily unavailable',
@@ -361,6 +362,7 @@ export const translations = {
       orderNow: 'ЗАМОВИТИ',
       instagram: 'INSTAGRAM',
       whatsapp: 'WHATSAPP',
+      telegram: 'TELEGRAM',
     },
     notice: {
       title: 'Оплата карткою тимчасово недоступна',
@@ -630,6 +632,7 @@ export const translations = {
       orderNow: 'ZAMÓW TERAZ',
       instagram: 'INSTAGRAM',
       whatsapp: 'WHATSAPP',
+      telegram: 'TELEGRAM',
     },
     notice: {
       title: 'Płatność kartą chwilowo niedostępna',

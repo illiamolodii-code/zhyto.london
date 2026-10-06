@@ -38,7 +38,7 @@ export default function FAQSection() {
             >
               <button
                 onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                className={`w-full glass-card rounded-none px-6 py-5 text-left flex items-center justify-between gap-4 transition-all cursor-pointer ${
+                className={`w-full glass-card rounded-xl px-6 py-5 text-left flex items-center justify-between gap-4 transition-all cursor-pointer ${
                   openFaq === index
                     ? 'border-l-4 border-primary bg-white shadow-md'
                     : 'border-l-4 border-transparent bg-white hover:bg-primary/[0.02] hover:shadow-md hover:border-primary/20'
@@ -60,7 +60,7 @@ export default function FAQSection() {
                     transition={{ duration: 0.3, ease: 'easeInOut' }}
                     className="overflow-hidden"
                   >
-                    <div className="px-6 py-4 text-black text-[17px] leading-relaxed bg-primary/5 border-l-4 border-primary">
+                    <div className="px-6 py-4 text-black text-[17px] leading-relaxed bg-primary/5 border-l-4 border-primary rounded-b-xl">
                       {item.a}
                     </div>
                   </motion.div>
@@ -82,7 +82,7 @@ export default function FAQSection() {
             <a href="#products">
               <Button
                 size="lg"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 px-12 py-7 tracking-[0.2em] text-[15px] rounded-none shadow-xl"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 px-12 py-7 tracking-[0.2em] text-[15px] rounded-xl shadow-xl"
               >
                 {t.contact.orderNow}
               </Button>
@@ -95,13 +95,15 @@ export default function FAQSection() {
             </a>
           </div>
 
-          <div className="flex items-center justify-center gap-10">
+          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
             <a href="https://www.instagram.com/zhyto.london/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors text-[14px] tracking-[0.2em]">
               {t.contact.instagram}
             </a>
-            <span className="text-muted-foreground/30">|</span>
             <a href="https://wa.me/440000000000" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors text-[14px] tracking-[0.2em]">
               {t.contact.whatsapp}
+            </a>
+            <a href="https://t.me/dunaimore" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors text-[14px] tracking-[0.2em]">
+              {t.contact.telegram}
             </a>
           </div>
         </motion.div>
