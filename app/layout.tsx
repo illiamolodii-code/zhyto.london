@@ -109,12 +109,12 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const h = headers()
+  const h = await headers()
   const locale = (h.get('x-locale') as Lang) || 'en'
   return (
     <html lang={locale} className={`${playfair.variable} ${zhyto.variable} ${geist.variable} ${caveat.variable} ${konstrukt.variable} ${epoch.variable} bg-background`} style={{ colorScheme: 'only light' }}>
