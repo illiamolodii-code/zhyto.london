@@ -1,48 +1,13 @@
 "use client"
 
-import { useRef, useEffect } from 'react'
 import { useLanguage } from '@/components/language-context'
-import { img } from '@/lib/constants'
 
 export default function HeroSection() {
   const { t } = useLanguage()
-  const videoRef = useRef<HTMLVideoElement>(null)
-
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-
-    let stopped = false
-
-    const tryPlay = () => {
-      if (stopped) return
-      video.muted = true
-      video.play().catch(() => {
-        setTimeout(tryPlay, 200)
-      })
-    }
-
-    tryPlay()
-
-    return () => { stopped = true }
-  }, [])
 
   return (
     <section className="relative min-h-dvh max-h-[720px] flex flex-col items-center justify-center overflow-hidden bg-black">
-      <style>{`video::-webkit-media-controls { display: none !important } video::-webkit-media-controls-start-playback-button { display: none !important }`}</style>
-      <video
-        ref={videoRef}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        disableRemotePlayback
-        className="absolute inset-0 w-full h-full object-cover"
-      >
-        <source src={img('/hero-bg-mobile.mp4')} media="(max-width: 640px)" />
-        <source src={img('/hero-bg.mp4')} />
-      </video>
+      <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/hero-bg.webp')" }} />
       <div className="absolute inset-0 bg-black/40" />
       <div className="relative z-10 w-full max-w-5xl mx-auto px-5 sm:px-10 text-center pt-20 sm:pt-24 md:pt-28 lg:pt-36">
         <h1 className="text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] font-serif font-light leading-[1.1] mb-10 relative tracking-[0.05em]">

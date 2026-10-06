@@ -108,17 +108,8 @@ export default function HomeClient({
   return (
     <>
       {!ready && (
-        <SplashScreen
+<SplashScreen
           onReady={() => setReady(true)}
-          onUserTap={() => {
-            const video = document.querySelector('video')
-            if (!video) return
-            video.muted = true
-            video.play().catch(() => {
-              const tryPlay = () => video.play().catch(() => {})
-              video.addEventListener('canplay', tryPlay, { once: true })
-            })
-          }}
         />
       )}
       <main className="min-h-screen bg-background">
