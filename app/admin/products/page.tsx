@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase'
 import { Plus, Pencil, X, Package, AlertCircle, Upload, FolderKanban, ChevronUp, ChevronDown } from 'lucide-react'
 import { img } from '@/lib/constants'
 import { toast } from 'sonner'
+import ImageMigrationPanel from '@/components/ImageMigrationPanel'
 
 interface Product {
   id: number
