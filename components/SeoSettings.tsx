@@ -53,7 +53,7 @@ async function fetchCurrentSeo(): Promise<{ value: SeoValue | null; pruned: bool
     if (key === 'home') continue
     const src = raw.categories?.[key]
     if (src && typeof src === 'object') {
-      value.categories[key] = {} as Record<Lang, SeoLocale>
+      value.categories[key] = { en: emptyLocale(), uk: emptyLocale(), pl: emptyLocale() }
       fill(value.categories[key], src)
     } else {
       pruned = true
